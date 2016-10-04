@@ -19,12 +19,4 @@
     <modules>
         <module>application</module>
     </modules>
-
-    <repositories>
-        <repository>
-            <id>${project.artifactId}.local</id>
-            <name>${project.artifactId}</name>
-            <url>file:${project.basedir}/repo</url>
-        </repository>
-    </repositories>
 </project>
