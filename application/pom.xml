@@ -13,6 +13,7 @@
     <artifactId>application</artifactId>
 
     <dependencies>
+        <!--SPRING MVC-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -22,10 +23,31 @@
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <!--SPRING DEVTOOLS-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--DATASOURCE-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--LIQUIBASE-->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
             <scope>runtime</scope>
         </dependency>
     </dependencies>
