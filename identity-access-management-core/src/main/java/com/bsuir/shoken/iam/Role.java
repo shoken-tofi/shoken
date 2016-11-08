@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@NoArgsConstructor(force = true)
+@NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 @Setter(value = AccessLevel.PACKAGE)
@@ -12,7 +12,7 @@ import javax.persistence.*;
 @ToString(exclude = "id")
 
 @Entity
-@Table(name = "roles")
+@Table(name = "roles", uniqueConstraints = @UniqueConstraint(name = "uk_roles_name", columnNames = "name"))
 class Role {
 
     @Id

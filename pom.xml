@@ -27,6 +27,9 @@
         <module>application</module>
         <module>identity-access-management-core</module>
         <module>identity-access-management-jpa-adapter</module>
+        <module>identity-access-management-application-service</module>
+        <module>identity-access-management-api</module>
+        <module>identity-access-management-api-rest-adapter</module>
     </modules>
 
     <dependencyManagement>

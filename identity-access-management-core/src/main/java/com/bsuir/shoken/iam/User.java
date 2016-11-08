@@ -4,7 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@NoArgsConstructor(force = true)
+@NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 @Setter(value = AccessLevel.PACKAGE)
