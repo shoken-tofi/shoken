@@ -50,6 +50,14 @@
             <artifactId>liquibase-core</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <!--IAM-->
+        <dependency>
+            <groupId>com.bsuir.tofi</groupId>
+            <artifactId>identity-access-management-jpa-adapter</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>
