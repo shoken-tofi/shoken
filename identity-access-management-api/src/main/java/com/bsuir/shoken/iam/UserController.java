@@ -15,13 +15,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/users")
 class UserController {
 
+    private final static String PAGE = "0";
+
+    private final static String SIZE = "10";
+
     private final UserService userService;
 
     private final UserConverter userConverter;
 
     @RequestMapping(method = RequestMethod.GET)
-    UsersDto get(@RequestParam(required = false, defaultValue = "0") int page,
-                 @RequestParam(required = false, defaultValue = "10") int size) {
+    UsersDto get(@RequestParam(required = false, defaultValue = PAGE) int page,
+                 @RequestParam(required = false, defaultValue = SIZE) int size) {
 
         final Pageable pageRequest = new PageRequest(page, size);
         final Page<User> users = userService.findAll(pageRequest);
