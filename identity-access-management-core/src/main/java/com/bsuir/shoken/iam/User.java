@@ -1,5 +1,6 @@
 package com.bsuir.shoken.iam;
 
+import com.bsuir.shoken.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -7,18 +8,14 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
-@Setter(value = AccessLevel.PACKAGE)
-@EqualsAndHashCode(exclude = "id")
-@ToString(exclude = "id")
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 
 @Entity
 @Table(name = "users")
-class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
-    @SequenceGenerator(name = "user_generator", sequenceName = "user_seq")
-    private Long id;
+@SequenceGenerator(name = "entity_generator", sequenceName = "users_seq")
+class User extends BaseEntity {
 
     @Column(nullable = false, unique = true, length = 32)
     private final String username;

@@ -30,6 +30,7 @@
         <module>identity-access-management-application-service</module>
         <module>identity-access-management-api</module>
         <module>identity-access-management-api-rest-adapter</module>
+        <module>shoken-management-core</module>
     </modules>
 
     <dependencyManagement>
