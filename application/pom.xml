@@ -64,6 +64,14 @@
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
+
+        <!--BID MANAGEMENT-->
+        <dependency>
+            <groupId>com.bsuir.tofi</groupId>
+            <artifactId>bid-management-jpa-adapter</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>

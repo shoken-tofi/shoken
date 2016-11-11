@@ -31,6 +31,8 @@
         <module>identity-access-management-api</module>
         <module>identity-access-management-api-rest-adapter</module>
         <module>shoken-management-core</module>
+        <module>bid-management-core</module>
+        <module>bid-management-jpa-adapter</module>
     </modules>
 
     <dependencyManagement>
