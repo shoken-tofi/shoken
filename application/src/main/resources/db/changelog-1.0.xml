@@ -16,7 +16,7 @@
 
         <createTable tableName="users">
             <column name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="pk_city_images"/>
+                <constraints primaryKey="true" primaryKeyName="pk_users"/>
             </column>
             <column name="username" type="VARCHAR(32)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="uk_users_username"/>
@@ -32,5 +32,177 @@
                              referencedTableName="roles"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="bid-management-schema" author="Tsimafei.Markusenka">
+        <createTable tableName="categories">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_categories"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="logos">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_logos"/>
+            </column>
+            <column name="path" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="extension" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="sellers">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_sellers"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registration_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="logo_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_sellers_logos_logo_id" referencedColumnNames="id"
+                             referencedTableName="logos"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="bid_images">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_bid_images"/>
+            </column>
+            <column name="path" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="extension" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="bids">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_bids"/>
+            </column>
+            <column name="seller_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_bids_sellers_seller_id" referencedColumnNames="id"
+                             referencedTableName="sellers"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_bids_categories_category_id" referencedColumnNames="id"
+                             referencedTableName="categories"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="featured_image_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_bids_bid_images_featured_image_id"
+                             referencedColumnNames="id" referencedTableName="bid_images"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_price" type="NUMERIC(12,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expiration_date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comment" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="bid-management-insert" author="Tsimafei.Markusenka">
+        <insert tableName="categories">
+            <column name="id" value="1"/>
+            <column name="name" value="Category1"/>
+        </insert>
+
+        <insert tableName="logos">
+            <column name="id" value="1"/>
+            <column name="path" value="/seller_images/"/>
+            <column name="name" value="seller1"/>
+            <column name="extension" value="JPG"/>
+        </insert>
+
+        <insert tableName="sellers">
+            <column name="id" value="1"/>
+            <column name="name" value="seller1"/>
+            <column name="registration_date" value="2016-11-01"/>
+            <column name="logo_id" value="1"/>
+        </insert>
+
+        <insert tableName="bid_images">
+            <column name="id" value="1"/>
+            <column name="path" value="/bid_images/"/>
+            <column name="name" value="bid1"/>
+            <column name="extension" value="JPG"/>
+        </insert>
+        <insert tableName="bid_images">
+            <column name="id" value="2"/>
+            <column name="path" value="/bid_images/"/>
+            <column name="name" value="bid2"/>
+            <column name="extension" value="JPG"/>
+        </insert>
+
+        <insert tableName="bids">
+            <column name="id" value="1"/>
+            <column name="seller_id" value="1"/>
+            <column name="status" value="NEW"/>
+            <column name="category_id" value="1"/>
+            <column name="title" value="title1"/>
+            <column name="featured_image_id" value="1"/>
+            <column name="type" value="BOND"/>
+            <column name="quantity" value="1"/>
+            <column name="description" value="description1"/>
+            <column name="start_price" value="11.20"/>
+            <column name="creation_date" value="2016-11-12"/>
+            <column name="expiration_date" value="2016-11-16"/>
+            <column name="payment_type" value="PAY_PAL"/>
+            <column name="comment" value=""/>
+        </insert>
+        <insert tableName="bids">
+            <column name="id" value="2"/>
+            <column name="seller_id" value="1"/>
+            <column name="status" value="NEW"/>
+            <column name="category_id" value="1"/>
+            <column name="title" value="title2"/>
+            <column name="featured_image_id" value="2"/>
+            <column name="type" value="SHARE"/>
+            <column name="quantity" value="5"/>
+            <column name="description" value="description2"/>
+            <column name="start_price" value="19.00"/>
+            <column name="creation_date" value="2016-11-11"/>
+            <column name="expiration_date" value="2016-11-15"/>
+            <column name="payment_type" value="PAY_PAL"/>
+            <column name="comment" value=""/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

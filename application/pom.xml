@@ -72,6 +72,12 @@
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.bsuir.tofi</groupId>
+            <artifactId>bid-management-api-rest-adapter</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>

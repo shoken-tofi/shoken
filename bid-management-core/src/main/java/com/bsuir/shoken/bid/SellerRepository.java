@@ -1,4 +1,8 @@
 package com.bsuir.shoken.bid;
 
-interface SellerRepository {
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.NoRepositoryBean;
+
+@NoRepositoryBean
+interface SellerRepository extends CrudRepository<Seller, Long> {
 }

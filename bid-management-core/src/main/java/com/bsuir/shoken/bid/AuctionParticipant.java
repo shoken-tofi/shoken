@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -23,7 +23,7 @@ abstract class AuctionParticipant extends BaseEntity {
     private final String name;
 
     @Column(name = "registration_date", nullable = false)
-    private final LocalDateTime registrationDate;
+    private final LocalDate registrationDate;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "logo_id", nullable = false)

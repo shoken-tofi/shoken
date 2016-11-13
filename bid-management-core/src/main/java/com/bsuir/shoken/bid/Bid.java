@@ -31,6 +31,10 @@ class Bid extends BaseEntity {
     @Column(nullable = false)
     private final String title;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "featured_image_id", nullable = false)
+    private final Image featuredImage;
+
     @Enumerated(EnumType.STRING)
     private final Type type;
 
@@ -40,11 +44,8 @@ class Bid extends BaseEntity {
     @Column(nullable = false, length = 1000)
     private final String description;
 
-    @Column(nullable = false)
+    @Column(name = "start_price", nullable = false)
     private final BigDecimal startPrice;
-
-    @Column(nullable = false)
-    private final BigDecimal step;
 
     @Column(name = "creation_date", nullable = false)
     private final LocalDateTime creationDate;
@@ -56,7 +57,7 @@ class Bid extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private final PaymentType paymentType;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String comment;
 
     enum Status {
@@ -72,5 +73,12 @@ class Bid extends BaseEntity {
     enum PaymentType {
 
         PAY_PAL
+    }
+
+    @Entity
+    @Table(name = "bid_images")
+    @SequenceGenerator(name = "entity_generator", sequenceName = "bid_images_seq")
+    static class Image extends BaseImage {
+
     }
 }

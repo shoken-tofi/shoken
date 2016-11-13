@@ -1,4 +1,8 @@
 package com.bsuir.shoken.bid;
 
-interface BidRepository {
+import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+@NoRepositoryBean
+interface BidRepository extends PagingAndSortingRepository<Bid, Long> {
 }

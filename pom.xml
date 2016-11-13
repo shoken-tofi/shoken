@@ -33,6 +33,9 @@
         <module>shoken-management-core</module>
         <module>bid-management-core</module>
         <module>bid-management-jpa-adapter</module>
+        <module>bid-management-application-service</module>
+        <module>bid-management-api</module>
+        <module>bid-management-api-rest-adapter</module>
     </modules>
 
     <dependencyManagement>

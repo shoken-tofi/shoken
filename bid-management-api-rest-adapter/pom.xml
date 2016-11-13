@@ -10,23 +10,25 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>bid-management-core</artifactId>
+    <artifactId>bid-management-api-rest-adapter</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.bsuir.tofi</groupId>
-            <artifactId>shoken-management-core</artifactId>
+            <artifactId>bid-management-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-java8</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
