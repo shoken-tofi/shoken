@@ -35,7 +35,7 @@ class BidService {
         }
 
         switch (bid.getStatus()) {
-            case CREATED:
+            case ACTIVE:
                 break;
             case DELETED:
                 // TODO: get authenticated user -> forbid access or redirect to me/bids/deleted

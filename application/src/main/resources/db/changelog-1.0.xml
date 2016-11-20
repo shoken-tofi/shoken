@@ -66,6 +66,22 @@
             </column>
         </createTable>
 
+        <createTable tableName="investors">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_investors"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registration_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="logo_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_investors_logos_logo_id" referencedColumnNames="id"
+                             referencedTableName="logos"/>
+            </column>
+        </createTable>
+
         <createTable tableName="bid_images">
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="pk_bid_images"/>
@@ -127,6 +143,26 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <createTable tableName="bets">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_bets"/>
+            </column>
+            <column name="investor_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_bets_investors_investor_id"
+                             referencedColumnNames="id" referencedTableName="investors"/>
+            </column>
+            <column name="bid_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_bets_bids_bid_id"
+                             referencedColumnNames="id" referencedTableName="bids"/>
+            </column>
+            <column name="value" type="NUMERIC(12,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
 
     <changeSet id="bid-management-insert" author="Tsimafei.Markusenka">
@@ -160,7 +196,7 @@
         <insert tableName="bids">
             <column name="id" value="1"/>
             <column name="seller_id" value="1"/>
-            <column name="status" value="NEW"/>
+            <column name="status" value="ACTIVE"/>
             <column name="title" value="title1"/>
             <column name="featured_image_id" value="1"/>
             <column name="type" value="BOND"/>
@@ -176,7 +212,7 @@
         <insert tableName="bids">
             <column name="id" value="2"/>
             <column name="seller_id" value="1"/>
-            <column name="status" value="NEW"/>
+            <column name="status" value="ACTIVE"/>
             <column name="title" value="title2"/>
             <column name="featured_image_id" value="2"/>
             <column name="type" value="SHARE"/>

@@ -9,6 +9,10 @@ import javax.persistence.Table;
 @SequenceGenerator(name = "entity_generator", sequenceName = "logos_seq")
 class Logo extends BaseImage {
 
+    Logo() {
+        super();
+    }
+
     Logo(String path, String name, Extension extension) {
         super(path, name, extension);
     }
