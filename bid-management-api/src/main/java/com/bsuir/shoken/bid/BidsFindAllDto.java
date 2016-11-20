@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode
 @ToString
-class CategoriesDto {
+class BidsFindAllDto {
 
-    private List<CategoryDto> categories;
+    private List<BidFindAllDto> bids;
 }

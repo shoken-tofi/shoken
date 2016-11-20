@@ -7,7 +7,7 @@ import lombok.*;
 @Setter(value = AccessLevel.PACKAGE)
 @EqualsAndHashCode(exclude = "id")
 @ToString(exclude = "id")
-class SellerDto {
+class SellerFindAllDto {
 
     private Long id;
 

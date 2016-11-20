@@ -8,9 +8,11 @@ import java.util.List;
 @NoRepositoryBean
 interface BetRepository extends CrudRepository<Bet, Long> {
 
-    List<Bet> findByBidId(Long bidId);
+    List<Bet> findByBidIdOrderByValueDesc(Long bidId);
 
-    List<Bet> findByInvestorId(Long investorId);
+    List<Bet> findByInvestorIdOrderByValueDesc(Long investorId);
 
-    List<Bet> findByBidIdAndInvestorId(Long bidId, Long investorId);
+    List<Bet> findByBidIdAndInvestorIdOrderByValueDesc(Long bidId, Long investorId);
+
+    Bet findFirstByBidIdOrderByValueDesc(Long bidId);
 }

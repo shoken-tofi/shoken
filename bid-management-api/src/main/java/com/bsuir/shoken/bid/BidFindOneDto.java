@@ -4,12 +4,10 @@ import lombok.*;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
-@Setter(value = AccessLevel.PACKAGE)
+@Setter
 @EqualsAndHashCode(exclude = "id")
 @ToString(exclude = "id")
-class CategoryDto {
+class BidFindOneDto {
 
     private Long id;
-
-    private String name;
 }

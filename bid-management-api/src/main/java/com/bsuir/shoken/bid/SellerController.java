@@ -16,10 +16,10 @@ abstract class SellerController {
     private final SellerConverter sellerConverter;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    SellerDto get(@PathVariable Long id) {
+    SellerFindAllDto get(@PathVariable Long id) {
 
         final Seller seller = sellerService.findOne(id);
 
-        return sellerConverter.convert(seller);
+        return sellerConverter.toFindAllDto(seller);
     }
 }

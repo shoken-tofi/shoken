@@ -28,7 +28,7 @@ class Bet extends BaseEntity {
     @Column(name = "bid_id", nullable = false, updatable = false)
     private final Long bidId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 2, scale = 12)
     private final BigDecimal value;
 
     @Column(nullable = false)

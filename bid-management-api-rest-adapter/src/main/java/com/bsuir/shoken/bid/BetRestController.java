@@ -1,4 +1,7 @@
 package com.bsuir.shoken.bid;
 
-class BetRestController {
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+class BetRestController extends BetController {
 }

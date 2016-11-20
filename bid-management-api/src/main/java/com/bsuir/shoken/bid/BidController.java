@@ -24,20 +24,20 @@ abstract class BidController {
     private final BidConverter bidConverter;
 
     @RequestMapping(method = RequestMethod.GET)
-    BidsDto get(@RequestParam(required = false, defaultValue = PAGE) int page,
-                @RequestParam(required = false, defaultValue = SIZE) int size) {
+    BidsFindAllDto get(@RequestParam(required = false, defaultValue = PAGE) int page,
+                       @RequestParam(required = false, defaultValue = SIZE) int size) {
 
         final Pageable pageRequest = new PageRequest(--page, size);
         final Page<Bid> bids = bidService.findAll(pageRequest);
 
-        return new BidsDto(bidConverter.convertToDtos(bids.getContent()));
+        return new BidsFindAllDto(bidConverter.toFindAllDtos(bids.getContent()));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    BidDetailsDto get(@PathVariable Long id) {
+    BidFindOneDto get(@PathVariable Long id) {
 
         final Bid bid = bidService.findOne(id);
 
-        return bidConverter.convertToDetailsDto(bid);
+        return bidConverter.toFindOneDto(bid);
     }
 }

@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -20,70 +21,86 @@ class BidConverter {
 
     private final SellerConverter sellerConverter;
 
-    List<BidDto> convertToDtos(final List<Bid> bids) {
+    private final BetService betService;
+
+    BidFindOneDto toFindOneDto(final Bid bid) {
+
+        if (bid == null) {
+            return null;
+        }
+
+        final BidFindOneDto dto = new BidFindOneDto();
+        dto.setId(bid.getId());
+        //TODO: map fields
+
+        return dto;
+    }
+
+    List<BidFindAllDto> toFindAllDtos(final List<Bid> bids) {
 
         if (bids == null) {
             return Collections.emptyList();
         }
 
-        return bids.stream().map(this::convertToDto).collect(Collectors.toList());
+        return bids.stream().map(this::toFindAllDto).collect(Collectors.toList());
     }
 
-    BidDetailsDto convertToDetailsDto(final Bid bid) {
+    private BidFindAllDto toFindAllDto(final Bid bid) {
 
         if (bid == null) {
             return null;
         }
 
-        final BidDetailsDto dto = new BidDetailsDto();
-        //TODO: mapping fields
-
-        return dto;
-    }
-
-    private BidDto convertToDto(final Bid bid) {
-
-        if (bid == null) {
-            return null;
-        }
-
-        final BidDto dto = new BidDto();
+        final BidFindAllDto dto = new BidFindAllDto();
         dto.setId(bid.getId());
         dto.setTitle(bid.getTitle());
-        dto.setType(bid.getType());
+        dto.setType(bid.getType().toString().toLowerCase());
         dto.setQuantity(bid.getQuantity());
-        //TODO: if no bets - startPrice; otherwise - the highest bet price;
-        dto.setPrice(bid.getStartPrice());
-
-        final Bid.Image image = bid.getFeaturedImage();
-        //TODO: create image url with host, path, name and extension
-        dto.setImageUrl("" + image.getPath() + image.getName() + image.getExtension().toString().toLowerCase());
-
-        dto.setTimeLeft(convertToTimeLeftDto(bid.getExpirationDate()));
-        dto.setPaymentType(bid.getPaymentType());
-        dto.setSeller(convertToSellerDto(bid.getSellerId()));
+        dto.setPrice(new BidFindAllDto.PriceDto(toPrice(bid.getStatus(), bid.getStartPrice(), bid.getId()),
+                bid.getStep()));
+        dto.setImageUrl(toImageUrl(bid.getFeaturedImage()));
+        dto.setTimeLeft(toTimeLeftDto(bid.getExpirationDate()));
+        dto.setPaymentType(bid.getPaymentType().toString().toLowerCase());
+        dto.setSeller(toSellerFindAllDto(bid.getSellerId()));
 
         return dto;
     }
 
-    private BidDto.TimeLeftDto convertToTimeLeftDto(final LocalDateTime expirationDate) {
+    private BigDecimal toPrice(final Bid.Status status, final BigDecimal startPrice, final Long bidId) {
 
-        LocalDateTime now = LocalDateTime.now();
-        final long hours = HOURS.between(now, expirationDate);
+        final BigDecimal price;
+        if (Bid.Status.NEW.equals(status)) {
+            price = startPrice;
+        } else {
+            final Bet bet = betService.findFirstByBidId(bidId);
+            price = bet.getValue();
+        }
 
-        now = now.plusHours(hours);
-        final long minutes = MINUTES.between(now, expirationDate);
-
-        now = now.plusMinutes(minutes);
-        final long seconds = SECONDS.between(now, expirationDate);
-
-        return new BidDto.TimeLeftDto(hours, minutes, seconds);
+        return price;
     }
 
-    private SellerDto convertToSellerDto(final Long sellerId) {
+    private String toImageUrl(final Bid.Image image) {
+        return "" + image.getPath() + image.getName() + "." + image.getExtension().toString().toLowerCase();
+    }
+
+    private TimeLeftDto toTimeLeftDto(final LocalDateTime expirationDate) {
+
+        LocalDateTime now = LocalDateTime.now();
+        final Long hours = HOURS.between(now, expirationDate);
+
+        now = now.plusHours(hours);
+        final Long minutes = MINUTES.between(now, expirationDate);
+
+        now = now.plusMinutes(minutes);
+        final Long seconds = SECONDS.between(now, expirationDate);
+
+        return new TimeLeftDto(hours, minutes, seconds);
+    }
+
+    private SellerFindAllDto toSellerFindAllDto(final Long sellerId) {
 
         final Seller seller = sellerService.findOne(sellerId);
 
-        return sellerConverter.convert(seller);
+        return sellerConverter.toFindAllDto(seller);
     }
 }

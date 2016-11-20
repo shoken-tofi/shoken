@@ -2,13 +2,15 @@ package com.bsuir.shoken.bid;
 
 import lombok.*;
 
-import java.util.List;
-
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 @EqualsAndHashCode
 @ToString
-class BidsDto {
+class TimeLeftDto {
 
-    private List<BidDto> bids;
+    private Long hours;
+
+    private Long minutes;
+
+    private Long seconds;
 }

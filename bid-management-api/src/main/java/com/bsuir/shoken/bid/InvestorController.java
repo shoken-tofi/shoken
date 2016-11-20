@@ -16,10 +16,10 @@ abstract class InvestorController {
     private final InvestorConverter investorConverter;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    InvestorDto get(@PathVariable Long id) {
+    InvestorFindAllDto get(@PathVariable Long id) {
 
         final Investor investor = investorService.findOne(id);
 
-        return investorConverter.convert(investor);
+        return investorConverter.toFindAllDto(investor);
     }
 }

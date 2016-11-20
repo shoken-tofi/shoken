@@ -6,41 +6,37 @@ import java.math.BigDecimal;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
-@Setter(value = AccessLevel.PACKAGE)
+@Setter
 @EqualsAndHashCode(exclude = "id")
 @ToString(exclude = "id")
-class BidDto {
+class BidFindAllDto {
 
     private Long id;
 
     private String title;
 
-    private Bid.Type type;
+    private String type;
 
     private Integer quantity;
 
-    private BigDecimal price;
+    private PriceDto price;
 
     private String imageUrl;
 
     private TimeLeftDto timeLeft;
 
-    private Bid.PaymentType paymentType;
+    private String paymentType;
 
-    private SellerDto seller;
+    private SellerFindAllDto seller;
 
-    @NoArgsConstructor(access = AccessLevel.PACKAGE)
     @AllArgsConstructor(access = AccessLevel.PACKAGE)
     @Getter
-    @Setter
     @EqualsAndHashCode
     @ToString
-    static class TimeLeftDto {
+    static class PriceDto {
 
-        private long hours;
+        private BigDecimal value;
 
-        private long minutes;
-
-        private long seconds;
+        private BigDecimal step;
     }
 }

@@ -30,6 +30,6 @@ abstract class BaseImage extends BaseEntity {
 
     enum Extension {
 
-        JPG, PNG
+        JPG, PNG, BMP
     }
 }

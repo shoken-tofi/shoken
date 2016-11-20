@@ -18,16 +18,21 @@ class BetService {
 
     @Transactional(readOnly = true)
     List<Bet> findByBidId(Long bidId) {
-        return betRepository.findByBidId(bidId);
+        return betRepository.findByBidIdOrderByValueDesc(bidId);
     }
 
     @Transactional(readOnly = true)
     List<Bet> findByInvestorId(Long investorId) {
-        return betRepository.findByInvestorId(investorId);
+        return betRepository.findByInvestorIdOrderByValueDesc(investorId);
     }
 
     @Transactional(readOnly = true)
     List<Bet> findByBidIdAndInvestorId(Long bidId, Long investorId) {
-        return betRepository.findByBidIdAndInvestorId(bidId, investorId);
+        return betRepository.findByBidIdAndInvestorIdOrderByValueDesc(bidId, investorId);
+    }
+
+    @Transactional(readOnly = true)
+    Bet findFirstByBidId(Long bidId) {
+        return betRepository.findFirstByBidIdOrderByValueDesc(bidId);
     }
 }

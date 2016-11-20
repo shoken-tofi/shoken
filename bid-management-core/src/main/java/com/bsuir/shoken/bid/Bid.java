@@ -25,9 +25,6 @@ class Bid extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private final Status status;
 
-    @Column(name = "category_id", nullable = false)
-    private final Long categoryId;
-
     @Column(nullable = false)
     private final String title;
 
@@ -44,8 +41,11 @@ class Bid extends BaseEntity {
     @Column(nullable = false, length = 1000)
     private final String description;
 
-    @Column(name = "start_price", nullable = false)
+    @Column(name = "start_price", nullable = false, precision = 2, scale = 12)
     private final BigDecimal startPrice;
+
+    @Column(nullable = false, precision = 2, scale = 12)
+    private final BigDecimal step;
 
     @Column(name = "creation_date", nullable = false)
     private final LocalDateTime creationDate;
@@ -62,7 +62,7 @@ class Bid extends BaseEntity {
 
     enum Status {
 
-        NEW, IN_PROGRESS, DELETED
+        NEW, IN_PROGRESS
     }
 
     enum Type {
@@ -79,6 +79,5 @@ class Bid extends BaseEntity {
     @Table(name = "bid_images")
     @SequenceGenerator(name = "entity_generator", sequenceName = "bid_images_seq")
     static class Image extends BaseImage {
-
     }
 }

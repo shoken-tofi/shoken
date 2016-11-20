@@ -5,13 +5,13 @@ import org.springframework.stereotype.Component;
 @Component
 class SellerConverter {
 
-    SellerDto convert(Seller seller) {
+    SellerFindAllDto toFindAllDto(Seller seller) {
 
         if (seller == null) {
             return null;
         }
 
-        final SellerDto dto = new SellerDto();
+        final SellerFindAllDto dto = new SellerFindAllDto();
         dto.setId(seller.getId());
         dto.setUsername(seller.getName());
 
