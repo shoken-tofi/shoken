@@ -23,7 +23,7 @@ class Bid extends BaseEntity {
     private final Long sellerId;
 
     @Enumerated(EnumType.STRING)
-    private final Status status;
+    private Status status = Status.CREATED;
 
     @Column(nullable = false)
     private final String title;
@@ -62,7 +62,7 @@ class Bid extends BaseEntity {
 
     enum Status {
 
-        NEW, IN_PROGRESS
+        CREATED, DELETED, CANCELED
     }
 
     enum Type {
@@ -79,5 +79,9 @@ class Bid extends BaseEntity {
     @Table(name = "bid_images")
     @SequenceGenerator(name = "entity_generator", sequenceName = "bid_images_seq")
     static class Image extends BaseImage {
+
+        Image(String path, String name, Extension extension) {
+            super(path, name, extension);
+        }
     }
 }

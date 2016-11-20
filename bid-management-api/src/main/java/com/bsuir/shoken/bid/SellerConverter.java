@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 class SellerConverter {
 
-    SellerFindAllDto toFindAllDto(Seller seller) {
+    SellerFindAllDto toFindAllDto(final Seller seller) {
 
         if (seller == null) {
             return null;

@@ -8,4 +8,8 @@ import javax.persistence.Table;
 @Table(name = "logos")
 @SequenceGenerator(name = "entity_generator", sequenceName = "logos_seq")
 class Logo extends BaseImage {
+
+    Logo(String path, String name, Extension extension) {
+        super(path, name, extension);
+    }
 }

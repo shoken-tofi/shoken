@@ -4,7 +4,7 @@ import lombok.*;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
-@Setter(value = AccessLevel.PACKAGE)
+@Setter
 @EqualsAndHashCode(exclude = "id")
 @ToString(exclude = "id")
 class SellerFindAllDto {

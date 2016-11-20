@@ -2,8 +2,6 @@ package com.bsuir.shoken.bid;
 
 import lombok.*;
 
-import java.math.BigDecimal;
-
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 @Setter
@@ -28,15 +26,4 @@ class BidFindAllDto {
     private String paymentType;
 
     private SellerFindAllDto seller;
-
-    @AllArgsConstructor(access = AccessLevel.PACKAGE)
-    @Getter
-    @EqualsAndHashCode
-    @ToString
-    static class PriceDto {
-
-        private BigDecimal value;
-
-        private BigDecimal step;
-    }
 }

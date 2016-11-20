@@ -2,16 +2,14 @@ package com.bsuir.shoken.bid;
 
 import lombok.*;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = "id")
-@ToString(exclude = "id")
-class BidFindOneDto {
-
-    private Long id;
+@EqualsAndHashCode
+@ToString
+class BidCreateDto {
 
     private String title;
 
@@ -23,15 +21,11 @@ class BidFindOneDto {
 
     private PriceDto price;
 
-    private String imageUrl;
+    private ImageDto image;
 
-    private TimeLeftDto timeLeft;
+    private LocalDateTime expirationDate;
 
     private String paymentType;
 
-    private SellerFindAllDto seller;
-
     private String comment;
-
-    private List<BetFindAllDto> bets;
 }

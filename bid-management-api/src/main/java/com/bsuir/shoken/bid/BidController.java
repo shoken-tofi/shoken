@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 
@@ -23,7 +20,7 @@ abstract class BidController {
 
     private final BidConverter bidConverter;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     BidsFindAllDto get(@RequestParam(required = false, defaultValue = PAGE) int page,
                        @RequestParam(required = false, defaultValue = SIZE) int size) {
 
@@ -33,11 +30,25 @@ abstract class BidController {
         return new BidsFindAllDto(bidConverter.toFindAllDtos(bids.getContent()));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     BidFindOneDto get(@PathVariable Long id) {
 
         final Bid bid = bidService.findOne(id);
 
         return bidConverter.toFindOneDto(bid);
+    }
+
+    @PostMapping
+    BidFindOneDto create(@RequestBody BidCreateDto dto) {
+
+        final Bid newBid = bidConverter.toEntity(dto);
+        final Bid createdBid = bidService.create(newBid);
+
+        return bidConverter.toFindOneDto(createdBid);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    void delete(@PathVariable Long id) {
+        bidService.delete(id);
     }
 }

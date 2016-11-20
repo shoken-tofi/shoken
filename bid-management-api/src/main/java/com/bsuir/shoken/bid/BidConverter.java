@@ -23,6 +23,26 @@ class BidConverter {
 
     private final BetService betService;
 
+    private final BetConverter betConverter;
+
+    Bid toEntity(final BidCreateDto dto) {
+
+        if (dto == null) {
+            return null;
+        }
+
+        final Long sellerId = 1L; // TODO: get authenticated user
+        final ImageDto image = dto.getImage();
+        final PriceDto price = dto.getPrice();
+        final Bid bid = new Bid(sellerId, dto.getTitle(), new Bid.Image("/bid_images/",
+                image.getName(), Bid.Image.Extension.valueOf(image.getExtension())), Bid.Type.valueOf(dto.getType()),
+                dto.getQuantity(), dto.getDescription(), price.getValue(), price.getStep(), LocalDateTime.now(),
+                dto.getExpirationDate(), Bid.PaymentType.valueOf(dto.getPaymentType()));
+        bid.setComment(dto.getComment());
+
+        return bid;
+    }
+
     BidFindOneDto toFindOneDto(final Bid bid) {
 
         if (bid == null) {
@@ -31,7 +51,17 @@ class BidConverter {
 
         final BidFindOneDto dto = new BidFindOneDto();
         dto.setId(bid.getId());
-        //TODO: map fields
+        dto.setTitle(bid.getTitle());
+        dto.setType(bid.getType().toString().toLowerCase());
+        dto.setQuantity(bid.getQuantity());
+        dto.setDescription(bid.getDescription());
+        dto.setPrice(new PriceDto(toPrice(bid.getStartPrice(), bid.getId()), bid.getStep()));
+        dto.setImageUrl(toImageUrl(bid.getFeaturedImage()));
+        dto.setTimeLeft(toTimeLeftDto(bid.getExpirationDate()));
+        dto.setPaymentType(bid.getPaymentType().toString().toLowerCase());
+        dto.setSeller(toSellerFindAllDto(bid.getSellerId()));
+        dto.setComment(bid.getComment());
+        dto.setBets(toBetFindAllDtos(bid.getId()));
 
         return dto;
     }
@@ -56,8 +86,7 @@ class BidConverter {
         dto.setTitle(bid.getTitle());
         dto.setType(bid.getType().toString().toLowerCase());
         dto.setQuantity(bid.getQuantity());
-        dto.setPrice(new BidFindAllDto.PriceDto(toPrice(bid.getStatus(), bid.getStartPrice(), bid.getId()),
-                bid.getStep()));
+        dto.setPrice(new PriceDto(toPrice(bid.getStartPrice(), bid.getId()), bid.getStep()));
         dto.setImageUrl(toImageUrl(bid.getFeaturedImage()));
         dto.setTimeLeft(toTimeLeftDto(bid.getExpirationDate()));
         dto.setPaymentType(bid.getPaymentType().toString().toLowerCase());
@@ -66,17 +95,14 @@ class BidConverter {
         return dto;
     }
 
-    private BigDecimal toPrice(final Bid.Status status, final BigDecimal startPrice, final Long bidId) {
+    private BigDecimal toPrice(final BigDecimal startPrice, final Long bidId) {
 
-        final BigDecimal price;
-        if (Bid.Status.NEW.equals(status)) {
-            price = startPrice;
-        } else {
-            final Bet bet = betService.findFirstByBidId(bidId);
-            price = bet.getValue();
+        final Bet bet = betService.findFirstByBidId(bidId);
+        if (bet == null) {
+            return startPrice;
         }
 
-        return price;
+        return bet.getValue();
     }
 
     private String toImageUrl(final Bid.Image image) {
@@ -97,10 +123,17 @@ class BidConverter {
         return new TimeLeftDto(hours, minutes, seconds);
     }
 
-    private SellerFindAllDto toSellerFindAllDto(final Long sellerId) {
+    private SellerFindAllDto toSellerFindAllDto(final Long id) {
 
-        final Seller seller = sellerService.findOne(sellerId);
+        final Seller seller = sellerService.findOne(id);
 
         return sellerConverter.toFindAllDto(seller);
+    }
+
+    private List<BetFindAllDto> toBetFindAllDtos(final Long bidId) {
+
+        final List<Bet> bets = betService.findByBidId(bidId);
+
+        return betConverter.toFindAllDtos(bets);
     }
 }

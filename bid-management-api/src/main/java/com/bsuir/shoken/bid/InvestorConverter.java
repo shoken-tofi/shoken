@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 class InvestorConverter {
 
-    InvestorFindAllDto toFindAllDto(Investor investor) {
+    InvestorFindAllDto toFindAllDto(final Investor investor) {
 
         if (investor == null) {
             return null;
