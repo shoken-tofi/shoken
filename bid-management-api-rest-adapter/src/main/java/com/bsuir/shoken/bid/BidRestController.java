@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 class BidRestController extends BidController {
 
     @Autowired
-    BidRestController(BidService bidService, BidConverter bidConverter) {
-        super(bidService, bidConverter);
+    BidRestController(BidService bidService, BidConverter bidConverter, BetService betService, BetConverter betConverter) {
+        super(bidService, bidConverter, betService, betConverter);
     }
 }

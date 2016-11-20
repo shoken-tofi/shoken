@@ -10,7 +10,6 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 @Setter
@@ -32,5 +31,5 @@ class Bet extends BaseEntity {
     private final BigDecimal value;
 
     @Column(nullable = false)
-    private final LocalDateTime date;
+    private LocalDateTime date = LocalDateTime.now();
 }

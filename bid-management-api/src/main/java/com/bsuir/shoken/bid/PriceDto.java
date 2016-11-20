@@ -4,13 +4,13 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 @EqualsAndHashCode
 @ToString
 class PriceDto {
 
-    private BigDecimal value;
+    private final BigDecimal value;
 
     private BigDecimal step;
 }

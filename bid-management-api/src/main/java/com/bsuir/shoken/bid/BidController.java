@@ -20,6 +20,10 @@ abstract class BidController {
 
     private final BidConverter bidConverter;
 
+    private final BetService betService;
+
+    private final BetConverter betConverter;
+
     @GetMapping
     BidsFindAllDto get(@RequestParam(required = false, defaultValue = PAGE) int page,
                        @RequestParam(required = false, defaultValue = SIZE) int size) {
@@ -50,5 +54,16 @@ abstract class BidController {
     @DeleteMapping(value = "/{id}")
     void delete(@PathVariable Long id) {
         bidService.delete(id);
+    }
+
+    @PostMapping(value = "/{id}/bets")
+    BetFindAllDto create(@PathVariable Long id, @RequestBody BetCreateDto dto) {
+
+        dto.setBidId(id);
+
+        final Bet newBet = betConverter.toEntity(dto);
+        final Bet createdBet = betService.create(newBet);
+
+        return betConverter.toFindAllDto(createdBet);
     }
 }

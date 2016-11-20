@@ -17,6 +17,17 @@ class BetConverter {
 
     private final InvestorConverter investorConverter;
 
+    Bet toEntity(final BetCreateDto dto) {
+
+        if (dto == null) {
+            return null;
+        }
+
+        final Long investorId = 1L; // TODO: get authenticated user
+
+        return new Bet(investorId, dto.getBidId(), dto.getValue());
+    }
+
     List<BetFindAllDto> toFindAllDtos(final List<Bet> bets) {
 
         if (bets == null) {
@@ -26,7 +37,7 @@ class BetConverter {
         return bets.stream().map(this::toFindAllDto).collect(Collectors.toList());
     }
 
-    private BetFindAllDto toFindAllDto(final Bet bet) {
+    BetFindAllDto toFindAllDto(final Bet bet) {
 
         if (bet == null) {
             return null;

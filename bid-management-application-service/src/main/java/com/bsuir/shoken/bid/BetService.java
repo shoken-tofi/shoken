@@ -35,4 +35,8 @@ class BetService {
     Bet findFirstByBidId(Long bidId) {
         return betRepository.findFirstByBidIdOrderByValueDesc(bidId);
     }
+
+    Bet create(Bet bet) {
+        return betRepository.save(bet);
+    }
 }

@@ -55,7 +55,7 @@ class BidConverter {
         dto.setType(bid.getType().toString().toLowerCase());
         dto.setQuantity(bid.getQuantity());
         dto.setDescription(bid.getDescription());
-        dto.setPrice(new PriceDto(toPrice(bid.getStartPrice(), bid.getId()), bid.getStep()));
+        dto.setPrice(new PriceDto(toPrice(bid.getStartPrice(), bid.getId())));
         dto.setImageUrl(toImageUrl(bid.getFeaturedImage()));
         dto.setTimeLeft(toTimeLeftDto(bid.getExpirationDate()));
         dto.setPaymentType(bid.getPaymentType().toString().toLowerCase());
@@ -86,7 +86,7 @@ class BidConverter {
         dto.setTitle(bid.getTitle());
         dto.setType(bid.getType().toString().toLowerCase());
         dto.setQuantity(bid.getQuantity());
-        dto.setPrice(new PriceDto(toPrice(bid.getStartPrice(), bid.getId()), bid.getStep()));
+        dto.setPrice(new PriceDto(toPrice(bid.getStartPrice(), bid.getId())));
         dto.setImageUrl(toImageUrl(bid.getFeaturedImage()));
         dto.setTimeLeft(toTimeLeftDto(bid.getExpirationDate()));
         dto.setPaymentType(bid.getPaymentType().toString().toLowerCase());
