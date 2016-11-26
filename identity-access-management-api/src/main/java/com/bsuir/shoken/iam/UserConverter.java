@@ -9,7 +9,16 @@ import java.util.stream.Collectors;
 @Component
 class UserConverter {
 
-    UserDto convert(User user) {
+    User toEntity(final RegisterDto dto) {
+
+        if (dto == null) {
+            return null;
+        }
+
+        return new User(dto.getUsername(), dto.getPassword(), dto.getEmail());
+    }
+
+    UserDto toDto(final User user) {
 
         if (user == null) {
             return null;
@@ -17,32 +26,19 @@ class UserConverter {
 
         final UserDto dto = new UserDto();
         dto.setId(user.getId());
-        dto.setUsername(user.getUsername());
+        dto.setLogin(user.getLogin());
         dto.setEmail(user.getEmail());
-        dto.setRole(convert(user.getRole()));
+        dto.setRole(user.getRole().getName().toString());
 
         return dto;
     }
 
-    List<UserDto> convert(List<User> users) {
+    List<UserDto> toDtos(final List<User> users) {
 
         if (users == null) {
             return Collections.emptyList();
         }
 
-        return users.stream().map(this::convert).collect(Collectors.toList());
-    }
-
-    private RoleDto convert(Role role) {
-
-        if (role == null) {
-            return null;
-        }
-
-        final RoleDto dto = new RoleDto();
-        dto.setId(role.getId());
-        dto.setName(role.getName());
-
-        return dto;
+        return users.stream().map(this::toDto).collect(Collectors.toList());
     }
 }

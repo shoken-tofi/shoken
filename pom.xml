@@ -30,6 +30,8 @@
         <module>identity-access-management-application-service</module>
         <module>identity-access-management-api</module>
         <module>identity-access-management-api-rest-adapter</module>
+        <module>identity-access-management-security</module>
+        <module>identity-access-management-security-spring-adapter</module>
         <module>shoken-management-core</module>
         <module>bid-management-core</module>
         <module>bid-management-jpa-adapter</module>

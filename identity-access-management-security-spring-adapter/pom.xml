@@ -10,29 +10,27 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>identity-access-management-application-service</artifactId>
+    <artifactId>identity-access-management-security-spring-adapter</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>com.bsuir.tofi</groupId>
-            <artifactId>identity-access-management-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <groupId>com.bsuir.tofi</groupId>
             <artifactId>identity-access-management-security</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.bsuir.tofi</groupId>
+            <artifactId>identity-access-management-application-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-            <version>${spring.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>

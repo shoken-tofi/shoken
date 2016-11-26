@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/users")
 abstract class UserController {
 
-    private final static String PAGE = "0";
+    private final static String PAGE = "1";
 
     private final static String SIZE = "10";
 
@@ -27,17 +27,17 @@ abstract class UserController {
     UsersDto get(@RequestParam(required = false, defaultValue = PAGE) int page,
                  @RequestParam(required = false, defaultValue = SIZE) int size) {
 
-        final Pageable pageRequest = new PageRequest(page, size);
+        final Pageable pageRequest = new PageRequest(--page, size);
         final Page<User> users = userService.findAll(pageRequest);
 
-        return new UsersDto(userConverter.convert(users.getContent()));
+        return new UsersDto(userConverter.toDtos(users.getContent()));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     UserDto get(@PathVariable Long id) {
 
-        final User user = userService.findOne(id);
+        final User user = userService.findById(id);
 
-        return userConverter.convert(user);
+        return userConverter.toDto(user);
     }
 }
