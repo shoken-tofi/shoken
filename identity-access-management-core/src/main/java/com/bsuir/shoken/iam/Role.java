@@ -5,7 +5,6 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 @Setter
@@ -17,6 +16,12 @@ import javax.persistence.*;
 @SequenceGenerator(name = "entity_generator", sequenceName = "roles_seq")
 class Role extends BaseEntity {
 
-    @Column(nullable = false, unique = true)
-    private final String name;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private final RoleName name;
+
+    enum RoleName {
+
+        ADMIN, USER
+    }
 }
