@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE, onConstructor = @__({@Autowired}))
 
@@ -32,7 +33,7 @@ class BetService {
     }
 
     @Transactional(readOnly = true)
-    Bet findFirstByBidId(Long bidId) {
+    Optional<Bet> findFirstByBidId(Long bidId) {
         return betRepository.findFirstByBidIdOrderByValueDesc(bidId);
     }
 

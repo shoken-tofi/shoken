@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bids")
-@SequenceGenerator(name = "entity_generator", sequenceName = "bids_seq")
+@SequenceGenerator(name = "entity_generator", sequenceName = "bids_seq", allocationSize = 1)
 class Bid extends BaseEntity {
 
     @Column(name = "seller_id", nullable = false, updatable = false)
@@ -38,14 +38,11 @@ class Bid extends BaseEntity {
     @Column(nullable = false)
     private final Integer quantity;
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, length = 2000)
     private final String description;
 
     @Column(name = "start_price", nullable = false, precision = 2, scale = 12)
     private final BigDecimal startPrice;
-
-    @Column(nullable = false, precision = 2, scale = 12)
-    private final BigDecimal step;
 
     @Column(name = "creation_date", nullable = false)
     private final LocalDateTime creationDate;
@@ -57,7 +54,7 @@ class Bid extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private final PaymentType paymentType;
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, length = 2000)
     private String comment;
 
     enum Status {
@@ -75,17 +72,23 @@ class Bid extends BaseEntity {
         PAY_PAL
     }
 
+    @NoArgsConstructor(access = AccessLevel.PACKAGE)
+    @EqualsAndHashCode(callSuper = true)
+    @ToString(callSuper = true)
+
     @Entity
     @Table(name = "bid_images")
-    @SequenceGenerator(name = "entity_generator", sequenceName = "bid_images_seq")
+    @SequenceGenerator(name = "entity_generator", sequenceName = "bid_images_seq", allocationSize = 1)
     static class Image extends BaseImage {
 
-        Image() {
-            super();
+        Image(String path) {
+            super(path);
         }
 
         Image(String path, String name, Extension extension) {
-            super(path, name, extension);
+            super(path);
+            setName(name);
+            setExtension(extension);
         }
     }
 }

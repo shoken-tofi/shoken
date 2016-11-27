@@ -22,7 +22,7 @@ class UserService {
 
     @Transactional(readOnly = true)
     Page<User> findAll(final Pageable pageable) {
-        return userRepository.findAllOrderByRegistrationDateDesc(pageable);
+        return userRepository.findAllByOrderByRegistrationDateDesc(pageable);
     }
 
     @Transactional(readOnly = true)

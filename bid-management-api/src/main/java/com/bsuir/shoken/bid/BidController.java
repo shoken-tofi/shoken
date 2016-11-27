@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -24,8 +25,9 @@ abstract class BidController {
 
     private final BetConverter betConverter;
 
+    @PreAuthorize("permitAll()")
     @GetMapping
-    BidsFindAllDto get(@RequestParam(required = false, defaultValue = PAGE) int page,
+    BidsFindAllDto getAll(@RequestParam(required = false, defaultValue = PAGE) int page,
                        @RequestParam(required = false, defaultValue = SIZE) int size) {
 
         final Pageable pageRequest = new PageRequest(--page, size);
@@ -34,23 +36,16 @@ abstract class BidController {
         return new BidsFindAllDto(bidConverter.toFindAllDtos(bids.getContent()));
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping(value = "/{id}")
-    BidFindOneDto get(@PathVariable Long id) {
+    BidFindOneDto get(@PathVariable Long id) throws Exception {
 
         final Bid bid = bidService.findOne(id);
 
         return bidConverter.toFindOneDto(bid);
     }
 
-    @PostMapping
-    BidFindOneDto create(@RequestBody BidCreateDto dto) {
-
-        final Bid newBid = bidConverter.toEntity(dto);
-        final Bid createdBid = bidService.create(newBid);
-
-        return bidConverter.toFindOneDto(createdBid);
-    }
-
+    @PreAuthorize("authenticated")
     @DeleteMapping(value = "/{id}")
     void delete(@PathVariable Long id) {
         bidService.delete(id);

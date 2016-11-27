@@ -22,11 +22,11 @@ abstract class BaseImage extends BaseEntity {
     private final String path;
 
     @Column(nullable = false)
-    private final String name;
+    private String name;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private final Extension extension;
+    private Extension extension;
 
     enum Extension {
 

@@ -5,21 +5,12 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
     <changeSet id="iam-management-schema" author="Tsimafei.Markusenka">
-        <createTable tableName="roles">
-            <column name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="pk_roles"/>
-            </column>
-            <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="uk_roles_name"/>
-            </column>
-        </createTable>
-
         <createTable tableName="users">
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="pk_users"/>
             </column>
-            <column name="username" type="VARCHAR(32)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="uk_users_username"/>
+            <column name="login" type="VARCHAR(32)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_users_login"/>
             </column>
             <column name="password" type="VARCHAR(60)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="uk_users_password"/>
@@ -27,11 +18,16 @@
             <column name="email" type="VARCHAR(255)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="uk_users_email"/>
             </column>
-            <column name="role_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_users_roles_role_id" referencedColumnNames="id"
-                             referencedTableName="roles"/>
+            <column name="registration_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR(255)">
+                <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <createSequence sequenceName="roles_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="users_seq" startValue="1" incrementBy="1"/>
     </changeSet>
 
     <changeSet id="bid-management-schema" author="Tsimafei.Markusenka">
@@ -57,9 +53,6 @@
             <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="registration_date" type="DATE">
-                <constraints nullable="false"/>
-            </column>
             <column name="logo_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="fk_sellers_logos_logo_id" referencedColumnNames="id"
                              referencedTableName="logos"/>
@@ -71,9 +64,6 @@
                 <constraints primaryKey="true" primaryKeyName="pk_investors"/>
             </column>
             <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="registration_date" type="DATE">
                 <constraints nullable="false"/>
             </column>
             <column name="logo_id" type="BIGINT">
@@ -121,13 +111,10 @@
             <column name="quantity" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" type="VARCHAR(1000)">
+            <column name="description" type="VARCHAR(2000)">
                 <constraints nullable="false"/>
             </column>
             <column name="start_price" type="NUMERIC(12,2)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="step" type="NUMERIC(12,2)">
                 <constraints nullable="false"/>
             </column>
             <column name="creation_date" type="TIMESTAMP WITHOUT TIME ZONE">
@@ -139,7 +126,7 @@
             <column name="payment_type" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="comment" type="VARCHAR(1000)">
+            <column name="comment" type="VARCHAR(2000)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -163,32 +150,44 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <createSequence sequenceName="bets_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="bid_images_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="bids_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="sellers_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="investors_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="logos_seq" startValue="1" incrementBy="1"/>
     </changeSet>
 
     <changeSet id="bid-management-insert" author="Tsimafei.Markusenka">
         <insert tableName="logos">
             <column name="id" value="1"/>
-            <column name="path" value="/seller_images/"/>
-            <column name="name" value="seller1"/>
+            <column name="path" value="/images/logos/"/>
+            <column name="name" value="logo1"/>
+            <column name="extension" value="JPG"/>
+        </insert>
+        <insert tableName="logos">
+            <column name="id" value="2"/>
+            <column name="path" value="/images/logos/"/>
+            <column name="name" value="logo2"/>
             <column name="extension" value="JPG"/>
         </insert>
 
         <insert tableName="sellers">
             <column name="id" value="1"/>
             <column name="name" value="seller1"/>
-            <column name="registration_date" value="2016-11-01"/>
             <column name="logo_id" value="1"/>
         </insert>
 
         <insert tableName="bid_images">
             <column name="id" value="1"/>
-            <column name="path" value="/bid_images/"/>
+            <column name="path" value="/images/bids/"/>
             <column name="name" value="bid1"/>
             <column name="extension" value="JPG"/>
         </insert>
         <insert tableName="bid_images">
             <column name="id" value="2"/>
-            <column name="path" value="/bid_images/"/>
+            <column name="path" value="/images/bids/"/>
             <column name="name" value="bid2"/>
             <column name="extension" value="JPG"/>
         </insert>
@@ -203,9 +202,8 @@
             <column name="quantity" value="1"/>
             <column name="description" value="description1"/>
             <column name="start_price" value="11.20"/>
-            <column name="step" value="1.00"/>
             <column name="creation_date" value="2016-11-12"/>
-            <column name="expiration_date" value="2016-11-16"/>
+            <column name="expiration_date" value="2016-12-02"/>
             <column name="payment_type" value="PAY_PAL"/>
             <column name="comment" value=""/>
         </insert>
@@ -219,11 +217,50 @@
             <column name="quantity" value="5"/>
             <column name="description" value="description2"/>
             <column name="start_price" value="19.00"/>
-            <column name="step" value="1.50"/>
             <column name="creation_date" value="2016-11-11"/>
-            <column name="expiration_date" value="2016-11-15"/>
+            <column name="expiration_date" value="2016-12-01"/>
             <column name="payment_type" value="PAY_PAL"/>
             <column name="comment" value=""/>
+        </insert>
+
+        <insert tableName="investors">
+            <column name="id" value="1"/>
+            <column name="name" value="investor1"/>
+            <column name="logo_id" value="1"/>
+        </insert>
+        <insert tableName="investors">
+            <column name="id" value="2"/>
+            <column name="name" value="investor2"/>
+            <column name="logo_id" value="2"/>
+        </insert>
+
+        <insert tableName="bets">
+            <column name="id" value="1"/>
+            <column name="investor_id" value="1"/>
+            <column name="bid_id" value="1"/>
+            <column name="value" value="12.00"/>
+            <column name="date" value="2016-11-07"/>
+        </insert>
+        <insert tableName="bets">
+            <column name="id" value="2"/>
+            <column name="investor_id" value="2"/>
+            <column name="bid_id" value="1"/>
+            <column name="value" value="13.00"/>
+            <column name="date" value="2016-11-08"/>
+        </insert>
+        <insert tableName="bets">
+            <column name="id" value="3"/>
+            <column name="investor_id" value="1"/>
+            <column name="bid_id" value="1"/>
+            <column name="value" value="14.00"/>
+            <column name="date" value="2016-11-17"/>
+        </insert>
+        <insert tableName="bets">
+            <column name="id" value="4"/>
+            <column name="investor_id" value="2"/>
+            <column name="bid_id" value="1"/>
+            <column name="value" value="15.00"/>
+            <column name="date" value="2016-11-18"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

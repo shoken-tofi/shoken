@@ -23,7 +23,7 @@ public class SpringAuthenticationService implements UserDetailsService, Authenti
         final Optional<User> userFromDatabase = userService.findByLogin(username);
 
         return userFromDatabase.map(user -> new SpringAuthenticatedUser(user.getLogin(), user.getPassword(),
-                Collections.singletonList(user.getRole().getName().toString())))
+                Collections.singletonList(user.getRole().toString())))
                 .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 }

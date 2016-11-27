@@ -1,5 +1,6 @@
 package com.bsuir.shoken.bid;
 
+import com.bsuir.shoken.ShokenConfigurationProperties;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.*;
@@ -17,6 +19,8 @@ import static java.time.temporal.ChronoUnit.*;
 @Component
 class BidConverter {
 
+    private final static String IMAGE_PATH = "/images/bids/";
+
     private final SellerService sellerService;
 
     private final SellerConverter sellerConverter;
@@ -25,23 +29,7 @@ class BidConverter {
 
     private final BetConverter betConverter;
 
-    Bid toEntity(final BidCreateDto dto) {
-
-        if (dto == null) {
-            return null;
-        }
-
-        final Long sellerId = 1L; // TODO: get authenticated user
-        final ImageDto image = dto.getImage();
-        final PriceDto price = dto.getPrice();
-        final Bid bid = new Bid(sellerId, dto.getTitle(), new Bid.Image("/bid_images/",
-                image.getName(), Bid.Image.Extension.valueOf(image.getExtension())), Bid.Type.valueOf(dto.getType()),
-                dto.getQuantity(), dto.getDescription(), price.getValue(), price.getStep(), LocalDateTime.now(),
-                dto.getExpirationDate(), Bid.PaymentType.valueOf(dto.getPaymentType()));
-        bid.setComment(dto.getComment());
-
-        return bid;
-    }
+    private final ShokenConfigurationProperties configurationProperties;
 
     BidFindOneDto toFindOneDto(final Bid bid) {
 
@@ -55,7 +43,7 @@ class BidConverter {
         dto.setType(bid.getType().toString().toLowerCase());
         dto.setQuantity(bid.getQuantity());
         dto.setDescription(bid.getDescription());
-        dto.setPrice(new PriceDto(toPrice(bid.getStartPrice(), bid.getId())));
+        dto.setPrice(toPriceDto(bid.getStartPrice(), bid.getId()));
         dto.setImageUrl(toImageUrl(bid.getFeaturedImage()));
         dto.setTimeLeft(toTimeLeftDto(bid.getExpirationDate()));
         dto.setPaymentType(bid.getPaymentType().toString().toLowerCase());
@@ -86,7 +74,7 @@ class BidConverter {
         dto.setTitle(bid.getTitle());
         dto.setType(bid.getType().toString().toLowerCase());
         dto.setQuantity(bid.getQuantity());
-        dto.setPrice(new PriceDto(toPrice(bid.getStartPrice(), bid.getId())));
+        dto.setPrice(toPriceDto(bid.getStartPrice(), bid.getId()));
         dto.setImageUrl(toImageUrl(bid.getFeaturedImage()));
         dto.setTimeLeft(toTimeLeftDto(bid.getExpirationDate()));
         dto.setPaymentType(bid.getPaymentType().toString().toLowerCase());
@@ -95,18 +83,20 @@ class BidConverter {
         return dto;
     }
 
-    private BigDecimal toPrice(final BigDecimal startPrice, final Long bidId) {
+    private PriceDto toPriceDto(final BigDecimal startPrice, final Long bidId) {
 
-        final Bet bet = betService.findFirstByBidId(bidId);
-        if (bet == null) {
-            return startPrice;
-        }
+        final Optional<Bet> bet = betService.findFirstByBidId(bidId);
+        final BigDecimal price = bet.map(Bet::getValue).orElse(startPrice);
 
-        return bet.getValue();
+        final PriceDto priceDto = new PriceDto(price);
+        priceDto.setStep(StepFactory.define(price));
+
+        return priceDto;
     }
 
     private String toImageUrl(final Bid.Image image) {
-        return "" + image.getPath() + image.getName() + "." + image.getExtension().toString().toLowerCase();
+        return configurationProperties.getImageServer().getName() + image.getPath() + image.getName() + "." +
+                image.getExtension().toString().toLowerCase();
     }
 
     private TimeLeftDto toTimeLeftDto(final LocalDateTime expirationDate) {

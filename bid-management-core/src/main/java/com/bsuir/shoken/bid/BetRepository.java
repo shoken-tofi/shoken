@@ -4,6 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.List;
+import java.util.Optional;
 
 @NoRepositoryBean
 interface BetRepository extends CrudRepository<Bet, Long> {
@@ -14,5 +15,5 @@ interface BetRepository extends CrudRepository<Bet, Long> {
 
     List<Bet> findByBidIdAndInvestorIdOrderByValueDesc(Long bidId, Long investorId);
 
-    Bet findFirstByBidIdOrderByValueDesc(Long bidId);
+    Optional<Bet> findFirstByBidIdOrderByValueDesc(Long bidId);
 }

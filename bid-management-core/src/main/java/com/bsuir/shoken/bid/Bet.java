@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 @Setter
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bets")
-@SequenceGenerator(name = "entity_generator", sequenceName = "bets_seq")
+@SequenceGenerator(name = "entity_generator", sequenceName = "bets_seq", allocationSize = 1)
 class Bet extends BaseEntity {
 
     @Column(name = "investor_id", nullable = false, updatable = false)

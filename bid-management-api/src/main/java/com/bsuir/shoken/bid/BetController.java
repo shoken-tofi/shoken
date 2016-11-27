@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.math.BigDecimal;
+
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 
 @RequestMapping("/bets")
@@ -21,6 +23,10 @@ abstract class BetController {
         final Bet newBet = betConverter.toEntity(dto);
         final Bet createdBet = betService.create(newBet);
 
-        return new PriceDto(createdBet.getValue());
+        final BigDecimal price = createdBet.getValue();
+        final PriceDto priceDto = new PriceDto(price);
+        priceDto.setStep(StepFactory.define(price));
+
+        return priceDto;
     }
 }

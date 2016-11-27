@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
+@Setter
 @EqualsAndHashCode
 @ToString
 class PriceDto {
