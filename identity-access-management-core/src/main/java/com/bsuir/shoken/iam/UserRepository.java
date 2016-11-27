@@ -10,7 +10,7 @@ import java.util.Optional;
 @NoRepositoryBean
 interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
-    Page<User> findAllOrderByRegistrationDateDesc(final Pageable pageable);
+    Page<User> findAllByOrderByRegistrationDateDesc(final Pageable pageable);
 
     Optional<User> findOneByLogin(final String login);
 

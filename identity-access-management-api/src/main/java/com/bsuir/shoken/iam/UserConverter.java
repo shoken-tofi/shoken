@@ -28,7 +28,7 @@ class UserConverter {
         dto.setId(user.getId());
         dto.setLogin(user.getLogin());
         dto.setEmail(user.getEmail());
-        dto.setRole(user.getRole().getName().toString());
+        dto.setRole(user.getRole().toString());
 
         return dto;
     }

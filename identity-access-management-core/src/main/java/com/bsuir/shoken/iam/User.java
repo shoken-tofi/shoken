@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 @Setter
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "users")
-@SequenceGenerator(name = "entity_generator", sequenceName = "users_seq")
+@SequenceGenerator(name = "entity_generator", sequenceName = "users_seq", allocationSize = 1)
 class User extends BaseEntity {
 
     @Column(nullable = false, unique = true, length = 50)
@@ -26,10 +27,15 @@ class User extends BaseEntity {
     @Column(nullable = false, unique = true, length = 100)
     private final String email;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role = new Role(Role.RoleName.USER);
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RoleName role = RoleName.USER;
 
     @Column(name = "registration_date", nullable = false)
     private LocalDate registrationDate = LocalDate.now();
+
+    enum RoleName {
+
+        ADMIN, USER
+    }
 }

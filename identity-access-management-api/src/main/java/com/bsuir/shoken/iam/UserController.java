@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 
 @RequestMapping("/users")
-class UserController {
+abstract class UserController {
 
     private final static String PAGE = "1";
 
