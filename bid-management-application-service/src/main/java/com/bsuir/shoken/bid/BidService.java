@@ -20,7 +20,7 @@ class BidService {
     private final BidRepository bidRepository;
 
     @Transactional(readOnly = true)
-    Page<Bid> findAll(Pageable pageable) {
+    Page<Bid> findAll(final Pageable pageable) {
 
         final Example<Bid> example = Example.of(new Bid());
 
@@ -28,22 +28,18 @@ class BidService {
     }
 
     @Transactional(readOnly = true)
-    Bid findOne(Long id) throws Exception {
+    Bid findOne(final Long id) throws Exception {
 
         final Optional<Bid> bid = bidRepository.findOneById(id);
 
-        if (!bid.isPresent()) {
-            throw new Exception();
-        }
-
-        return bid.get();
+        return bid.orElseThrow(Exception::new);
     }
 
-    Bid create(Bid bid) {
+    Bid create(final Bid bid) {
         return bidRepository.save(bid);
     }
 
-    void delete(Long id) {
+    void delete(final Long id) {
         bidRepository.delete(id);
     }
 }

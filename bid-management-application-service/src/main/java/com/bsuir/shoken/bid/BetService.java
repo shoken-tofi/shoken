@@ -18,26 +18,26 @@ class BetService {
     private final BetRepository betRepository;
 
     @Transactional(readOnly = true)
-    List<Bet> findByBidId(Long bidId) {
+    List<Bet> findByBidId(final Long bidId) {
         return betRepository.findByBidIdOrderByValueDesc(bidId);
     }
 
     @Transactional(readOnly = true)
-    List<Bet> findByInvestorId(Long investorId) {
+    List<Bet> findByInvestorId(final Long investorId) {
         return betRepository.findByInvestorIdOrderByValueDesc(investorId);
     }
 
     @Transactional(readOnly = true)
-    List<Bet> findByBidIdAndInvestorId(Long bidId, Long investorId) {
+    List<Bet> findByBidIdAndInvestorId(final Long bidId, final Long investorId) {
         return betRepository.findByBidIdAndInvestorIdOrderByValueDesc(bidId, investorId);
     }
 
     @Transactional(readOnly = true)
-    Optional<Bet> findFirstByBidId(Long bidId) {
+    Optional<Bet> findFirstByBidId(final Long bidId) {
         return betRepository.findFirstByBidIdOrderByValueDesc(bidId);
     }
 
-    Bet create(Bet bet) {
+    Bet create(final Bet bet) {
         return betRepository.save(bet);
     }
 }

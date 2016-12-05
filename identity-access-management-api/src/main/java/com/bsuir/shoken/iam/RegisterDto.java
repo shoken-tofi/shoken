@@ -15,7 +15,7 @@ class RegisterDto {
     @Size(min = 6, max = 50)
     @Pattern(regexp = "^[A-Za-z0-9]+(?:[_.-][A-Za-z0-9]+)*$",
             message = "Username must contain only digits, lowercase and uppercase letters " +
-                    "separated by underscore, dot and hyphen.")
+                    "separated by underscore, dot or hyphen.")
     private String username;
 
     @Size(min = 6, max = 50)

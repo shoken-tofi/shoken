@@ -33,7 +33,7 @@ class UserConverter {
         return dto;
     }
 
-    List<UserDto> toDtos(final List<User> users) {
+    List<UserDto> toDTOs(final List<User> users) {
 
         if (users == null) {
             return Collections.emptyList();

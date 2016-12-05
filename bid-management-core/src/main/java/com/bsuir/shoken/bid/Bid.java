@@ -22,6 +22,7 @@ class Bid extends BaseEntity {
     @Column(name = "seller_id", nullable = false, updatable = false)
     private final Long sellerId;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status = Status.ACTIVE;
 
@@ -32,6 +33,7 @@ class Bid extends BaseEntity {
     @JoinColumn(name = "featured_image_id", nullable = false)
     private final Image featuredImage;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private final Type type;
 
@@ -45,7 +47,7 @@ class Bid extends BaseEntity {
     private final BigDecimal startPrice;
 
     @Column(name = "creation_date", nullable = false)
-    private final LocalDateTime creationDate;
+    private LocalDateTime creationDate = LocalDateTime.now();
 
     @Column(name = "expiration_date", nullable = false)
     private final LocalDateTime expirationDate;
@@ -54,7 +56,7 @@ class Bid extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private final PaymentType paymentType;
 
-    @Column(nullable = false, length = 2000)
+    @Column(length = 2000)
     private String comment;
 
     enum Status {

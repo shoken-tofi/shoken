@@ -51,6 +51,7 @@ abstract class BidController {
         bidService.delete(id);
     }
 
+    @PreAuthorize("authenticated")
     @PostMapping(value = "/{id}/bets")
     BetFindAllDto create(@PathVariable Long id, @RequestBody BetCreateDto dto) {
 
