@@ -15,11 +15,6 @@
     <dependencies>
         <dependency>
             <groupId>com.bsuir.tofi</groupId>
-            <artifactId>identity-access-management-security</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bsuir.tofi</groupId>
             <artifactId>identity-access-management-application-service</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -27,19 +22,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>${spring-security.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-jwt</artifactId>
         </dependency>
 
         <dependency>

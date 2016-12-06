@@ -13,7 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE, onConstructor = @__({@Autowired}))
 
 @Service
-public class SpringAuthenticationService implements UserDetailsService, AuthenticationService {
+class SpringAuthenticationService implements UserDetailsService {
 
     private final UserService userService;
 
