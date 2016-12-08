@@ -1,6 +1,5 @@
 package com.bsuir.shoken.bid;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -8,10 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+@RequiredArgsConstructor
 
 @Component
-class BetConverter {
+public class BetConverter {
 
     private final InvestorService investorService;
 
@@ -23,9 +22,16 @@ class BetConverter {
             return null;
         }
 
-        final Long investorId = 1L; // TODO: get authenticated user
+        return new Bet(dto.getInvestorId(), dto.getBidId(), dto.getValue());
+    }
 
-        return new Bet(investorId, dto.getBidId(), dto.getValue());
+    public List<Bet> toEntities(final List<BetCreateDto> dtoList) {
+
+        if (dtoList == null) {
+            return Collections.emptyList();
+        }
+
+        return dtoList.stream().map(this::toEntity).collect(Collectors.toList());
     }
 
     List<BetFindAllDto> toFindAllDtos(final List<Bet> bets) {

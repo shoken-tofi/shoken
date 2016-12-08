@@ -9,11 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE, onConstructor = @__({@Autowired}))
+@RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 
 @Service
 @Transactional
-class BetService {
+public class BetService {
 
     private final BetRepository betRepository;
 
@@ -37,7 +37,7 @@ class BetService {
         return betRepository.findFirstByBidIdOrderByValueDesc(bidId);
     }
 
-    Bet create(final Bet bet) {
+    public Bet create(final Bet bet) {
         return betRepository.save(bet);
     }
 }

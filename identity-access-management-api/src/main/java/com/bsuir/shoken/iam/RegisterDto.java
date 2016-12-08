@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Getter
 @EqualsAndHashCode
 @ToString
-class RegisterDto {
+public class RegisterDto {
 
     @Size(min = 6, max = 50)
     @Pattern(regexp = "^[A-Za-z0-9]+(?:[_.-][A-Za-z0-9]+)*$",

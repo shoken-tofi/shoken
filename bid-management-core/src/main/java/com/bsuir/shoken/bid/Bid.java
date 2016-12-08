@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "bids")
 @SequenceGenerator(name = "entity_generator", sequenceName = "bids_seq", allocationSize = 1)
-class Bid extends BaseEntity {
+public class Bid extends BaseEntity {
 
     @Column(name = "seller_id", nullable = false, updatable = false)
     private final Long sellerId;

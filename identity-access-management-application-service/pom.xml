@@ -20,7 +20,13 @@
         </dependency>
         <dependency>
             <groupId>com.bsuir.tofi</groupId>
-            <artifactId>identity-access-management-security</artifactId>
+            <artifactId>identity-access-management-event</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bsuir.tofi</groupId>
+            <artifactId>shoken-management-exception</artifactId>
             <version>${project.version}</version>
         </dependency>
 

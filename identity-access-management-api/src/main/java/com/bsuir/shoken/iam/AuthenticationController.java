@@ -1,8 +1,8 @@
 package com.bsuir.shoken.iam;
 
+import com.bsuir.shoken.AlreadyExistingEntityException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 
 @RequestMapping("/")
-@Validated
 abstract class AuthenticationController {
 
     private final UserConverter userConverter;
@@ -20,12 +19,12 @@ abstract class AuthenticationController {
     private final SecurityContextService securityContextService;
     
     @PostMapping("/register")
-    UserDto register(@RequestBody RegisterDto dto) {
+    UserDto register(@RequestBody RegisterDto dto) throws AlreadyExistingEntityException {
 
         final User user = userConverter.toEntity(dto);
         final User userFromDatabase = userService.create(user);
 
-//        securityContextService.setAuthentication(userFromDatabase);
+        securityContextService.setAuthentication(userFromDatabase);
 
         return userConverter.toDto(userFromDatabase);
     }

@@ -28,16 +28,24 @@
         <module>identity-access-management-core</module>
         <module>identity-access-management-jpa-adapter</module>
         <module>identity-access-management-application-service</module>
+        <module>identity-access-management-event</module>
         <module>identity-access-management-api</module>
         <module>identity-access-management-api-rest-adapter</module>
         <module>identity-access-management-security-spring-adapter</module>
+        <module>identity-access-management-service-gateway</module>
+        <module>identity-access-management-service-gateway-rest-adapter</module>
         <module>shoken-management-core</module>
         <module>shoken-management-util</module>
+        <module>shoken-management-exception</module>
+        <module>shoken-management-service-gateway-mocharoo-adapter</module>
         <module>bid-management-core</module>
         <module>bid-management-jpa-adapter</module>
         <module>bid-management-application-service</module>
         <module>bid-management-api</module>
         <module>bid-management-api-rest-adapter</module>
+        <module>bid-management-service-gateway</module>
+        <module>bid-management-service-gateway-rest-adapter</module>
+        <module>application-st</module>
     </modules>
 
     <dependencyManagement>

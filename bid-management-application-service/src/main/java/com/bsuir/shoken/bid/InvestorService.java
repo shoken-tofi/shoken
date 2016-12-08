@@ -18,4 +18,8 @@ class InvestorService {
     Investor findOne(final Long id) {
         return investorRepository.findOne(id);
     }
+
+    Investor create(final Investor investor) {
+        return investorRepository.save(investor);
+    }
 }

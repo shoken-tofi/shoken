@@ -15,30 +15,9 @@ import javax.persistence.*;
 @MappedSuperclass
 abstract class AuctionParticipant extends BaseEntity {
 
+    @Column(name = "user_id", nullable = false)
+    private final Long userId;
+
     @Column(nullable = false)
     private final String name;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "logo_id", nullable = false)
-    private final Logo logo;
-
-    @NoArgsConstructor(access = AccessLevel.PACKAGE)
-    @EqualsAndHashCode(callSuper = true)
-    @ToString(callSuper = true)
-
-    @Entity
-    @Table(name = "logos")
-    @SequenceGenerator(name = "entity_generator", sequenceName = "logos_seq", allocationSize = 1)
-    static class Logo extends BaseImage {
-
-        Logo(String path) {
-            super(path);
-        }
-
-        Logo(String path, String name, Extension extension) {
-            super(path);
-            setName(name);
-            setExtension(extension);
-        }
-    }
 }

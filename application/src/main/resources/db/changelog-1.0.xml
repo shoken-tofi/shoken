@@ -31,21 +31,6 @@
     </changeSet>
 
     <changeSet id="bid-management-schema" author="Tsimafei.Markusenka">
-        <createTable tableName="logos">
-            <column name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="pk_logos"/>
-            </column>
-            <column name="path" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="extension" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
         <createTable tableName="sellers">
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="pk_sellers"/>
@@ -53,9 +38,8 @@
             <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="logo_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_sellers_logos_logo_id" referencedColumnNames="id"
-                             referencedTableName="logos"/>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
         </createTable>
 
@@ -66,9 +50,8 @@
             <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="logo_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_investors_logos_logo_id" referencedColumnNames="id"
-                             referencedTableName="logos"/>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
         </createTable>
 
@@ -160,23 +143,10 @@
     </changeSet>
 
     <changeSet id="bid-management-insert" author="Tsimafei.Markusenka">
-        <insert tableName="logos">
-            <column name="id" value="1"/>
-            <column name="path" value="/images/logos/"/>
-            <column name="name" value="logo1"/>
-            <column name="extension" value="JPG"/>
-        </insert>
-        <insert tableName="logos">
-            <column name="id" value="2"/>
-            <column name="path" value="/images/logos/"/>
-            <column name="name" value="logo2"/>
-            <column name="extension" value="JPG"/>
-        </insert>
-
         <insert tableName="sellers">
             <column name="id" value="1"/>
             <column name="name" value="seller1"/>
-            <column name="logo_id" value="1"/>
+            <column name="user_id" value="1"/>
         </insert>
 
         <insert tableName="bid_images">
@@ -226,12 +196,12 @@
         <insert tableName="investors">
             <column name="id" value="1"/>
             <column name="name" value="investor1"/>
-            <column name="logo_id" value="1"/>
+            <column name="user_id" value="1"/>
         </insert>
         <insert tableName="investors">
             <column name="id" value="2"/>
             <column name="name" value="investor2"/>
-            <column name="logo_id" value="2"/>
+            <column name="user_id" value="2"/>
         </insert>
 
         <insert tableName="bets">

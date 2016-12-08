@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "bets")
 @SequenceGenerator(name = "entity_generator", sequenceName = "bets_seq", allocationSize = 1)
-class Bet extends BaseEntity {
+public class Bet extends BaseEntity {
 
     @Column(name = "investor_id", nullable = false, updatable = false)
     private final Long investorId;

@@ -18,4 +18,8 @@ class SellerService {
     Seller findOne(final Long id) {
         return sellerRepository.findOne(id);
     }
+
+    Seller create(final Seller seller) {
+        return sellerRepository.save(seller);
+    }
 }

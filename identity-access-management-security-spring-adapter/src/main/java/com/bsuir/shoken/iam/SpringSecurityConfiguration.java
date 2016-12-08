@@ -19,9 +19,10 @@ import org.springframework.security.web.authentication.Http403ForbiddenEntryPoin
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE, onConstructor = @__({@Autowired}))
 
 @Configuration
+
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
+class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
 
@@ -43,13 +44,13 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
 
         http
+                .httpBasic()
+                .and()
                 .authorizeRequests().anyRequest().permitAll()
                 .and()
                 .formLogin().successHandler(successHandler).failureHandler(failureHandler)
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint())
-                .and()
-                .httpBasic().realmName("shoken")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
