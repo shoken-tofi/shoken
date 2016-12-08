@@ -9,7 +9,9 @@ import java.math.BigDecimal;
 @Setter
 @EqualsAndHashCode
 @ToString
-class BetCreateDto {
+public class BetCreateDto {
+
+    private Long investorId;
 
     private Long bidId;
 

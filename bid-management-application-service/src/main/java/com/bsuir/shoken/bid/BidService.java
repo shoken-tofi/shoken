@@ -1,6 +1,5 @@
 package com.bsuir.shoken.bid;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -11,39 +10,38 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE, onConstructor = @__({@Autowired}))
+@RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 
 @Service
 @Transactional
-class BidService {
+public class BidService {
 
     private final BidRepository bidRepository;
 
     @Transactional(readOnly = true)
-    Page<Bid> findAll(Pageable pageable) {
+    Page<Bid> findAll(final Pageable pageable) {
 
-        final Example<Bid> example = Example.of(new Bid());
+        final Bid bid = new Bid();
+        bid.setCreationDate(null);
+
+        final Example<Bid> example = Example.of(bid);
 
         return bidRepository.findAll(example, pageable);
     }
 
     @Transactional(readOnly = true)
-    Bid findOne(Long id) throws Exception {
+    Bid findOne(final Long id) throws Exception {
 
         final Optional<Bid> bid = bidRepository.findOneById(id);
 
-        if (!bid.isPresent()) {
-            throw new Exception();
-        }
-
-        return bid.get();
+        return bid.orElseThrow(Exception::new);
     }
 
-    Bid create(Bid bid) {
+    public Bid create(final Bid bid) {
         return bidRepository.save(bid);
     }
 
-    void delete(Long id) {
+    void delete(final Long id) {
         bidRepository.delete(id);
     }
 }

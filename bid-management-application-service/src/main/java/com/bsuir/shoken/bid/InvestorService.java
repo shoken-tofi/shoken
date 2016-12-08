@@ -15,7 +15,11 @@ class InvestorService {
     private final InvestorRepository investorRepository;
 
     @Transactional(readOnly = true)
-    Investor findOne(Long id) {
+    Investor findOne(final Long id) {
         return investorRepository.findOne(id);
+    }
+
+    Investor create(final Investor investor) {
+        return investorRepository.save(investor);
     }
 }

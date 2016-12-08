@@ -1,7 +1,6 @@
 package com.bsuir.shoken.bid;
 
 import com.bsuir.shoken.ShokenConfigurationProperties;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +13,10 @@ import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.*;
 
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+@RequiredArgsConstructor
 
 @Component
-class BidConverter {
+public class BidConverter {
 
     private final static String IMAGE_PATH = "/images/bids/";
 

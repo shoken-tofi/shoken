@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "users")
 @SequenceGenerator(name = "entity_generator", sequenceName = "users_seq", allocationSize = 1)
-class User extends BaseEntity {
+public class User extends BaseEntity {
 
     @Column(nullable = false, unique = true, length = 50)
     private final String login;

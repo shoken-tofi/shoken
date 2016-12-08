@@ -20,6 +20,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.bsuir.tofi</groupId>
+            <artifactId>identity-access-management-event</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>

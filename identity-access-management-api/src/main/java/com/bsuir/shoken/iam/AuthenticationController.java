@@ -1,8 +1,8 @@
 package com.bsuir.shoken.iam;
 
+import com.bsuir.shoken.AlreadyExistingEntityException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +16,15 @@ abstract class AuthenticationController {
 
     private final UserService userService;
 
-    @PreAuthorize("permitAll()")
+    private final SecurityContextService securityContextService;
+    
     @PostMapping("/register")
-    UserDto register(@RequestBody RegisterDto dto) {
+    UserDto register(@RequestBody RegisterDto dto) throws AlreadyExistingEntityException {
 
         final User user = userConverter.toEntity(dto);
         final User userFromDatabase = userService.create(user);
+
+        securityContextService.setAuthentication(userFromDatabase);
 
         return userConverter.toDto(userFromDatabase);
     }

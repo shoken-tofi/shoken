@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-class UserConverter {
+public class UserConverter {
 
     User toEntity(final RegisterDto dto) {
 
@@ -16,6 +16,15 @@ class UserConverter {
         }
 
         return new User(dto.getUsername(), dto.getPassword(), dto.getEmail());
+    }
+
+    public List<User> toEntities(final List<RegisterDto> dtoList) {
+
+        if (dtoList == null) {
+            return Collections.emptyList();
+        }
+
+        return dtoList.stream().map(this::toEntity).collect(Collectors.toList());
     }
 
     UserDto toDto(final User user) {
@@ -33,7 +42,7 @@ class UserConverter {
         return dto;
     }
 
-    List<UserDto> toDtos(final List<User> users) {
+    List<UserDto> toDTOs(final List<User> users) {
 
         if (users == null) {
             return Collections.emptyList();

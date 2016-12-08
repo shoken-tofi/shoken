@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @EqualsAndHashCode
 @ToString
-class BidCreateDto {
+public class BidCreateDto {
 
     private String title;
 

@@ -30,7 +30,7 @@ abstract class UserController {
         final Pageable pageRequest = new PageRequest(--page, size);
         final Page<User> users = userService.findAll(pageRequest);
 
-        return new UsersDto(userConverter.toDtos(users.getContent()));
+        return new UsersDto(userConverter.toDTOs(users.getContent()));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

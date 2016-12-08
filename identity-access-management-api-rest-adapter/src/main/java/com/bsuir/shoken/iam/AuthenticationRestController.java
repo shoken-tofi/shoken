@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 class AuthenticationRestController extends AuthenticationController {
 
     @Autowired
-    AuthenticationRestController(UserConverter userConverter, UserService userService) {
-        super(userConverter, userService);
+    AuthenticationRestController(UserConverter userConverter, UserService userService,
+                                 SecurityContextService securityContextService) {
+        super(userConverter, userService, securityContextService);
     }
 }
