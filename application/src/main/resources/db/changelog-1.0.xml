@@ -202,8 +202,8 @@
             <column name="quantity" value="1"/>
             <column name="description" value="description1"/>
             <column name="start_price" value="11.20"/>
-            <column name="creation_date" value="2016-11-12"/>
-            <column name="expiration_date" value="2016-12-02"/>
+            <column name="creation_date" value="2016-12-01"/>
+            <column name="expiration_date" value="2017-01-01"/>
             <column name="payment_type" value="PAY_PAL"/>
             <column name="comment" value=""/>
         </insert>
@@ -217,8 +217,8 @@
             <column name="quantity" value="5"/>
             <column name="description" value="description2"/>
             <column name="start_price" value="19.00"/>
-            <column name="creation_date" value="2016-11-11"/>
-            <column name="expiration_date" value="2016-12-01"/>
+            <column name="creation_date" value="2016-12-01"/>
+            <column name="expiration_date" value="2017-01-01"/>
             <column name="payment_type" value="PAY_PAL"/>
             <column name="comment" value=""/>
         </insert>

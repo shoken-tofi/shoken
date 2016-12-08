@@ -2,7 +2,6 @@ package com.bsuir.shoken.iam;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,12 +17,15 @@ abstract class AuthenticationController {
 
     private final UserService userService;
 
-    @PreAuthorize("permitAll()")
+    private final SecurityContextService securityContextService;
+    
     @PostMapping("/register")
     UserDto register(@RequestBody RegisterDto dto) {
 
         final User user = userConverter.toEntity(dto);
         final User userFromDatabase = userService.create(user);
+
+//        securityContextService.setAuthentication(userFromDatabase);
 
         return userConverter.toDto(userFromDatabase);
     }

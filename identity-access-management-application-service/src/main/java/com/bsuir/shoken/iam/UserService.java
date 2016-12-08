@@ -42,6 +42,16 @@ class UserService {
 
     User create(final User userToCreate) {
 
+        final Optional<User> userByLogin = userRepository.findOneByLogin(userToCreate.getLogin());
+        userByLogin.ifPresent(user -> {
+            throw new RuntimeException(user.toString());
+        });
+
+        final Optional<User> userByEmail = userRepository.findOneByLogin(userToCreate.getEmail());
+        userByEmail.ifPresent(user -> {
+            throw new RuntimeException(user.toString());
+        });
+
         final User user = new User(userToCreate.getLogin(), passwordHashEncoder.encode(userToCreate.getPassword()),
                 userToCreate.getEmail());
 

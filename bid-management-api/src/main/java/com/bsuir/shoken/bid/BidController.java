@@ -25,7 +25,6 @@ abstract class BidController {
 
     private final BetConverter betConverter;
 
-    @PreAuthorize("permitAll()")
     @GetMapping
     BidsFindAllDto getAll(@RequestParam(required = false, defaultValue = PAGE) int page,
                        @RequestParam(required = false, defaultValue = SIZE) int size) {
@@ -36,7 +35,6 @@ abstract class BidController {
         return new BidsFindAllDto(bidConverter.toFindAllDtos(bids.getContent()));
     }
 
-    @PreAuthorize("permitAll()")
     @GetMapping(value = "/{id}")
     BidFindOneDto get(@PathVariable Long id) throws Exception {
 
