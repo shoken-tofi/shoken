@@ -22,7 +22,6 @@ public class BidService {
     Page<Bid> findAll(final Pageable pageable) {
 
         final Bid bid = new Bid();
-        bid.setCreationDate(null);
 
         final Example<Bid> example = Example.of(bid);
 

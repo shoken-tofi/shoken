@@ -32,7 +32,7 @@ abstract class BidController {
         final Pageable pageRequest = new PageRequest(--page, size);
         final Page<Bid> bids = bidService.findAll(pageRequest);
 
-        return new BidsFindAllDto(bidConverter.toFindAllDtos(bids.getContent()));
+        return new BidsFindAllDto(bidConverter.toFindAllDTOs(bids.getContent()));
     }
 
     @GetMapping(value = "/{id}")

@@ -21,7 +21,7 @@ class SellerUserCreatedEventListener implements ApplicationListener<UserCreatedE
             return;
         }
 
-//        final Seller seller = new Seller(event.getId(), event.getUsername());
-//        sellerService.create(seller);
+        final Seller seller = new Seller(event.getId(), event.getUsername());
+        sellerService.create(seller);
     }
 }

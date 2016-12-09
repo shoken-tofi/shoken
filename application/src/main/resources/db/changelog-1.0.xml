@@ -62,12 +62,8 @@
             <column name="path" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="extension" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="extension" type="VARCHAR(255)"/>
         </createTable>
 
         <createTable tableName="bids">
@@ -109,9 +105,7 @@
             <column name="payment_type" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="comment" type="VARCHAR(2000)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="comment" type="VARCHAR(1000)"/>
         </createTable>
 
         <createTable tableName="bets">
@@ -134,103 +128,10 @@
             </column>
         </createTable>
 
-        <createSequence sequenceName="bets_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="sellers_seq" startValue="1" incrementBy="1"/>
         <createSequence sequenceName="bid_images_seq" startValue="1" incrementBy="1"/>
         <createSequence sequenceName="bids_seq" startValue="1" incrementBy="1"/>
-        <createSequence sequenceName="sellers_seq" startValue="1" incrementBy="1"/>
         <createSequence sequenceName="investors_seq" startValue="1" incrementBy="1"/>
-        <createSequence sequenceName="logos_seq" startValue="1" incrementBy="1"/>
-    </changeSet>
-
-    <changeSet id="bid-management-insert" author="Tsimafei.Markusenka">
-        <insert tableName="sellers">
-            <column name="id" value="1"/>
-            <column name="name" value="seller1"/>
-            <column name="user_id" value="1"/>
-        </insert>
-
-        <insert tableName="bid_images">
-            <column name="id" value="1"/>
-            <column name="path" value="/images/bids/"/>
-            <column name="name" value="bid1"/>
-            <column name="extension" value="JPG"/>
-        </insert>
-        <insert tableName="bid_images">
-            <column name="id" value="2"/>
-            <column name="path" value="/images/bids/"/>
-            <column name="name" value="bid2"/>
-            <column name="extension" value="JPG"/>
-        </insert>
-
-        <insert tableName="bids">
-            <column name="id" value="1"/>
-            <column name="seller_id" value="1"/>
-            <column name="status" value="ACTIVE"/>
-            <column name="title" value="title1"/>
-            <column name="featured_image_id" value="1"/>
-            <column name="type" value="BOND"/>
-            <column name="quantity" value="1"/>
-            <column name="description" value="description1"/>
-            <column name="start_price" value="11.20"/>
-            <column name="creation_date" value="2016-12-01"/>
-            <column name="expiration_date" value="2017-01-01"/>
-            <column name="payment_type" value="PAY_PAL"/>
-            <column name="comment" value=""/>
-        </insert>
-        <insert tableName="bids">
-            <column name="id" value="2"/>
-            <column name="seller_id" value="1"/>
-            <column name="status" value="ACTIVE"/>
-            <column name="title" value="title2"/>
-            <column name="featured_image_id" value="2"/>
-            <column name="type" value="SHARE"/>
-            <column name="quantity" value="5"/>
-            <column name="description" value="description2"/>
-            <column name="start_price" value="19.00"/>
-            <column name="creation_date" value="2016-12-01"/>
-            <column name="expiration_date" value="2017-01-01"/>
-            <column name="payment_type" value="PAY_PAL"/>
-            <column name="comment" value=""/>
-        </insert>
-
-        <insert tableName="investors">
-            <column name="id" value="1"/>
-            <column name="name" value="investor1"/>
-            <column name="user_id" value="1"/>
-        </insert>
-        <insert tableName="investors">
-            <column name="id" value="2"/>
-            <column name="name" value="investor2"/>
-            <column name="user_id" value="2"/>
-        </insert>
-
-        <insert tableName="bets">
-            <column name="id" value="1"/>
-            <column name="investor_id" value="1"/>
-            <column name="bid_id" value="1"/>
-            <column name="value" value="12.00"/>
-            <column name="date" value="2016-11-07"/>
-        </insert>
-        <insert tableName="bets">
-            <column name="id" value="2"/>
-            <column name="investor_id" value="2"/>
-            <column name="bid_id" value="1"/>
-            <column name="value" value="13.00"/>
-            <column name="date" value="2016-11-08"/>
-        </insert>
-        <insert tableName="bets">
-            <column name="id" value="3"/>
-            <column name="investor_id" value="1"/>
-            <column name="bid_id" value="1"/>
-            <column name="value" value="14.00"/>
-            <column name="date" value="2016-11-17"/>
-        </insert>
-        <insert tableName="bets">
-            <column name="id" value="4"/>
-            <column name="investor_id" value="2"/>
-            <column name="bid_id" value="1"/>
-            <column name="value" value="15.00"/>
-            <column name="date" value="2016-11-18"/>
-        </insert>
+        <createSequence sequenceName="bets_seq" startValue="1" incrementBy="1"/>
     </changeSet>
 </databaseChangeLog>

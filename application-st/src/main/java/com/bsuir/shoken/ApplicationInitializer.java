@@ -18,6 +18,8 @@ class ApplicationInitializer {
 
     private static final Logger LOGGER = getLogger(ApplicationInitializer.class);
 
+    private static final int BID_COUNT = 5;
+
     private final UserInitializer userInitializer;
 
     private final BidInitializer bidInitializer;
@@ -25,13 +27,17 @@ class ApplicationInitializer {
     private final BetInitializer betInitializer;
 
     @GetMapping
-    void init() {
+    public void init() {
 
         LOGGER.info("...initialization started...");
 
         userInitializer.init();
-        bidInitializer.init();
-        betInitializer.init();
+
+        for (int i = 0; i < BID_COUNT; i++) {
+            bidInitializer.init();
+        }
+
+//        betInitializer.init();
 
         LOGGER.info("...initialization ended...");
     }

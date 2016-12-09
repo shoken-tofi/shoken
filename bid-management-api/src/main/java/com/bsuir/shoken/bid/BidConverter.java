@@ -12,6 +12,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.*;
+import static org.apache.commons.io.FilenameUtils.getBaseName;
+import static org.apache.commons.io.FilenameUtils.getExtension;
 
 @RequiredArgsConstructor
 
@@ -48,12 +50,12 @@ public class BidConverter {
         dto.setPaymentType(bid.getPaymentType().toString().toLowerCase());
         dto.setSeller(toSellerFindAllDto(bid.getSellerId()));
         dto.setComment(bid.getComment());
-        dto.setBets(toBetFindAllDtos(bid.getId()));
+        dto.setBets(toBetFindAllDTOs(bid.getId()));
 
         return dto;
     }
 
-    List<BidFindAllDto> toFindAllDtos(final List<Bid> bids) {
+    List<BidFindAllDto> toFindAllDTOs(final List<Bid> bids) {
 
         if (bids == null) {
             return Collections.emptyList();
@@ -94,8 +96,11 @@ public class BidConverter {
     }
 
     private String toImageUrl(final Bid.Image image) {
-        return configurationProperties.getImageServer().getName() + image.getPath() + image.getName() + "." +
-                image.getExtension().toString().toLowerCase();
+
+        final String path = image.getPath();
+
+        return path.startsWith("http") ? path : configurationProperties.getImageServer().getName() + image.getPath()
+                + image.getName() + "." + image.getExtension().toString().toLowerCase();
     }
 
     private TimeLeftDto toTimeLeftDto(final LocalDateTime expirationDate) {
@@ -119,10 +124,46 @@ public class BidConverter {
         return sellerConverter.toFindAllDto(seller);
     }
 
-    private List<BetFindAllDto> toBetFindAllDtos(final Long bidId) {
+    private List<BetFindAllDto> toBetFindAllDTOs(final Long bidId) {
 
         final List<Bet> bets = betService.findByBidId(bidId);
 
         return betConverter.toFindAllDtos(bets);
+    }
+
+    Bid toEntity(final BidCreateDto dto) {
+
+        if (dto == null) {
+            return null;
+        }
+
+        final Bid.Image featureImage;
+        final String featureImageName = dto.getImageName();
+        if (featureImageName.startsWith("http")) {
+            featureImage = new Bid.Image(featureImageName);
+        } else {
+            featureImage = new Bid.Image(IMAGE_PATH, getBaseName(featureImageName),
+                    BaseImage.Extension.valueOf(getExtension(featureImageName).toUpperCase()));
+        }
+
+        final LocalDateTime now = LocalDateTime.now();
+
+        final Bid bid = new Bid(dto.getSellerId(), dto.getTitle(), featureImage,
+                Bid.Type.valueOf(dto.getType().toUpperCase()), dto.getQuantity(), dto.getDescription(),
+                dto.getStartPrice(), LocalDateTime.of(dto.getExpirationDate(), now.toLocalTime()),
+                Bid.PaymentType.valueOf(dto.getPaymentType().toUpperCase()));
+        bid.setCreationDate(now);
+        bid.setComment(dto.getComment());
+
+        return bid;
+    }
+
+    public List<Bid> toEntities(final List<BidCreateDto> dtoList) {
+
+        if (dtoList == null) {
+            return Collections.emptyList();
+        }
+
+        return dtoList.stream().map(this::toEntity).collect(Collectors.toList());
     }
 }

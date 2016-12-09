@@ -2,7 +2,8 @@ package com.bsuir.shoken.bid;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
@@ -11,7 +12,11 @@ import java.time.LocalDateTime;
 @ToString
 public class BidCreateDto {
 
+    private Long sellerId;
+
     private String title;
+
+    private String imageName;
 
     private String type;
 
@@ -19,11 +24,9 @@ public class BidCreateDto {
 
     private String description;
 
-    private PriceDto price;
+    private BigDecimal startPrice;
 
-    private ImageDto image;
-
-    private LocalDateTime expirationDate;
+    private LocalDate expirationDate;
 
     private String paymentType;
 

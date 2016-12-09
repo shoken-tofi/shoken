@@ -29,7 +29,7 @@ public class Bid extends BaseEntity {
     @Column(nullable = false)
     private final String title;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "featured_image_id", nullable = false)
     private final Image featuredImage;
 
@@ -47,7 +47,7 @@ public class Bid extends BaseEntity {
     private final BigDecimal startPrice;
 
     @Column(name = "creation_date", nullable = false)
-    private LocalDateTime creationDate = LocalDateTime.now();
+    private LocalDateTime creationDate;
 
     @Column(name = "expiration_date", nullable = false)
     private final LocalDateTime expirationDate;

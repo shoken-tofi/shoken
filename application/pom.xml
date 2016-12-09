@@ -91,6 +91,20 @@
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
+
+        <!--ST-->
+        <dependency>
+            <groupId>com.bsuir.tofi</groupId>
+            <artifactId>application-st</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bsuir.tofi</groupId>
+            <artifactId>shoken-management-service-gateway-mocharoo-adapter</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>
