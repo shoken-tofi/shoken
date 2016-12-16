@@ -1,9 +1,11 @@
 package com.bsuir.shoken;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+@Component
 class ApplicationCorsFilter extends CorsFilter {
 
     ApplicationCorsFilter() {

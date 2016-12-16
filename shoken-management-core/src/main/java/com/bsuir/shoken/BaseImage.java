@@ -1,6 +1,5 @@
-package com.bsuir.shoken.bid;
+package com.bsuir.shoken;
 
-import com.bsuir.shoken.BaseEntity;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -8,27 +7,25 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 
-@NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(force = true)
+@RequiredArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 
 @MappedSuperclass
-abstract class BaseImage extends BaseEntity {
+public abstract class BaseImage extends BaseEntity {
+
+    private String path;
 
     @Column(nullable = false)
-    private final String path;
+    private final String name;
 
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Extension extension;
 
-    enum Extension {
+    public enum Extension {
 
         JPG, PNG, BMP
     }

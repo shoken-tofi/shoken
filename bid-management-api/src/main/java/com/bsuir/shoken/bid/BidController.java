@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -33,6 +34,7 @@ abstract class BidController {
         return new BidsFindAllDto(bidConverter.toFindAllDTOs(bids.getContent()));
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/{id}")
     BidFindOneDto get(@PathVariable Long id) throws Exception {
 

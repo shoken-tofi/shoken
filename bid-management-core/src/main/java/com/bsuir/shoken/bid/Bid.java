@@ -1,6 +1,7 @@
 package com.bsuir.shoken.bid;
 
 import com.bsuir.shoken.BaseEntity;
+import com.bsuir.shoken.BaseImage;
 import lombok.*;
 
 import javax.persistence.*;
@@ -83,13 +84,13 @@ public class Bid extends BaseEntity {
     @SequenceGenerator(name = "entity_generator", sequenceName = "bid_images_seq", allocationSize = 1)
     static class Image extends BaseImage {
 
-        Image(String path) {
-            super(path);
+        Image(String name) {
+            super(name);
         }
 
         Image(String path, String name, Extension extension) {
-            super(path);
-            setName(name);
+            super(name);
+            setPath(path);
             setExtension(extension);
         }
     }

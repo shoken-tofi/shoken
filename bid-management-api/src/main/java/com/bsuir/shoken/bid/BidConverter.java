@@ -1,5 +1,6 @@
 package com.bsuir.shoken.bid;
 
+import com.bsuir.shoken.BaseImage;
 import com.bsuir.shoken.ShokenConfigurationProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

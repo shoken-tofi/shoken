@@ -44,7 +44,7 @@ public class BidService {
 
         final Optional<Bid> bid = bidRepository.findOneById(id);
 
-        return bid.orElseThrow(() -> new NoSuchEntityException("Bid with such id = " + id + " already exists."));
+        return bid.orElseThrow(() -> new NoSuchEntityException("Bid with such id = " + id + " doesn't exists."));
     }
 
     public Bid create(final Bid bid) {
@@ -76,7 +76,7 @@ public class BidService {
     void delete(final Long id) throws NoSuchEntityException, ValidationException {
 
         final Bid bid = bidRepository.findOneById(id)
-                .orElseThrow(() -> new NoSuchEntityException("Bid with such id = " + id + " already exists."));
+                .orElseThrow(() -> new NoSuchEntityException("Bid with such id = " + id + " doesn't exists."));
 
         final Bid.Status deleted = Bid.Status.DELETED;
         if (bid.getStatus() == deleted) {

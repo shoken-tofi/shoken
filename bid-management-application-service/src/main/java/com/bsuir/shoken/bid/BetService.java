@@ -36,7 +36,7 @@ public class BetService {
 
         final Long bidId = bet.getBidId();
         if (!bidRepository.exists(bidId)) {
-            throw new NoSuchEntityException("Bid with such id = " + bidId + " already exists.");
+            throw new NoSuchEntityException("Bid with such id = " + bidId + " doesn't exists.");
         }
 
         final BigDecimal currentMaxValue = betRepository.findFirstByBidIdOrderByValueDesc(bidId)
@@ -45,7 +45,7 @@ public class BetService {
 
         final BigDecimal value = bet.getValue();
         if (currentMaxValue.compareTo(value) >= 0) {
-            throw new ValidationException("Bet value = " + value + "is less or equals to current max value.");
+            throw new ValidationException("Bet value = " + value + " is less or equals to current max value.");
         }
 
         return betRepository.save(new Bet(bet.getInvestorId(), bidId, value));
