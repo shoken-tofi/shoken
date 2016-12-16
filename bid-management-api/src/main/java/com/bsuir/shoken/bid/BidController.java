@@ -1,11 +1,12 @@
 package com.bsuir.shoken.bid;
 
+import com.bsuir.shoken.NoSuchEntityException;
+import com.bsuir.shoken.ValidationException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -14,15 +15,12 @@ import org.springframework.web.bind.annotation.*;
 abstract class BidController {
 
     private final static String PAGE = "1";
-
     private final static String SIZE = "10";
 
     private final BidService bidService;
-
     private final BidConverter bidConverter;
 
     private final BetService betService;
-
     private final BetConverter betConverter;
 
     @GetMapping
@@ -43,21 +41,28 @@ abstract class BidController {
         return bidConverter.toFindOneDto(bid);
     }
 
-    @PreAuthorize("authenticated")
+    @PostMapping
+    BidFindAllDto create(@RequestBody BidCreateDto dto) throws ValidationException, NoSuchEntityException {
+
+        final Bid bid = bidConverter.toEntity(dto);
+        final Bid bidFromDatabase = bidService.create(bid);
+
+        return bidConverter.toFindAllDto(bidFromDatabase);
+    }
+
     @DeleteMapping(value = "/{id}")
-    void delete(@PathVariable Long id) {
+    void delete(@PathVariable Long id) throws ValidationException, NoSuchEntityException {
         bidService.delete(id);
     }
 
-    @PreAuthorize("authenticated")
-    @PostMapping(value = "/{id}/bets")
-    BetFindAllDto create(@PathVariable Long id, @RequestBody BetCreateDto dto) {
+    @GetMapping("/{id}/bets")
+    BetsFindAllDto getBetsByBidId(@PathVariable(name = "id") Long bidId,
+                                  @RequestParam(required = false, defaultValue = BetController.PAGE) int page,
+                                  @RequestParam(required = false, defaultValue = BetController.SIZE) int size) {
 
-        dto.setBidId(id);
+        final Pageable pageRequest = new PageRequest(--page, size);
+        final Page<Bet> bets = betService.findByBidId(bidId, pageRequest);
 
-        final Bet newBet = betConverter.toEntity(dto);
-        final Bet createdBet = betService.create(newBet);
-
-        return betConverter.toFindAllDto(createdBet);
+        return new BetsFindAllDto(betConverter.toFindAllDTOs(bets.getContent()));
     }
 }

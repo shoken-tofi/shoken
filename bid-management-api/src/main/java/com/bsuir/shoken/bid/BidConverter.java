@@ -2,6 +2,9 @@ package com.bsuir.shoken.bid;
 
 import com.bsuir.shoken.ShokenConfigurationProperties;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -44,7 +47,7 @@ public class BidConverter {
         dto.setType(bid.getType().toString().toLowerCase());
         dto.setQuantity(bid.getQuantity());
         dto.setDescription(bid.getDescription());
-        dto.setPrice(toPriceDto(bid.getStartPrice(), bid.getId()));
+        dto.setPrice(toPriceDto(bid.getId(), bid.getStartPrice()));
         dto.setImageUrl(toImageUrl(bid.getFeaturedImage()));
         dto.setTimeLeft(toTimeLeftDto(bid.getExpirationDate()));
         dto.setPaymentType(bid.getPaymentType().toString().toLowerCase());
@@ -64,7 +67,7 @@ public class BidConverter {
         return bids.stream().map(this::toFindAllDto).collect(Collectors.toList());
     }
 
-    private BidFindAllDto toFindAllDto(final Bid bid) {
+    BidFindAllDto toFindAllDto(final Bid bid) {
 
         if (bid == null) {
             return null;
@@ -75,7 +78,7 @@ public class BidConverter {
         dto.setTitle(bid.getTitle());
         dto.setType(bid.getType().toString().toLowerCase());
         dto.setQuantity(bid.getQuantity());
-        dto.setPrice(toPriceDto(bid.getStartPrice(), bid.getId()));
+        dto.setPrice(toPriceDto(bid.getId(), bid.getStartPrice()));
         dto.setImageUrl(toImageUrl(bid.getFeaturedImage()));
         dto.setTimeLeft(toTimeLeftDto(bid.getExpirationDate()));
         dto.setPaymentType(bid.getPaymentType().toString().toLowerCase());
@@ -84,15 +87,14 @@ public class BidConverter {
         return dto;
     }
 
-    private PriceDto toPriceDto(final BigDecimal startPrice, final Long bidId) {
+    private PriceDto toPriceDto(final Long bidId, final BigDecimal startPrice) {
 
-        final Optional<Bet> bet = betService.findFirstByBidId(bidId);
+        final Optional<Bet> bet = betService.findMaxByBidId(bidId);
         final BigDecimal price = bet.map(Bet::getValue).orElse(startPrice);
 
-        final PriceDto priceDto = new PriceDto(price);
-        priceDto.setStep(StepFactory.define(price));
+        final BigDecimal step = BigDecimal.ONE; //TODO: get from database
 
-        return priceDto;
+        return new PriceDto(price, step);
     }
 
     private String toImageUrl(final Bid.Image image) {
@@ -126,9 +128,11 @@ public class BidConverter {
 
     private List<BetFindAllDto> toBetFindAllDTOs(final Long bidId) {
 
-        final List<Bet> bets = betService.findByBidId(bidId);
+        final Pageable pageRequest = new PageRequest(Integer.valueOf(BetController.PAGE) - 1,
+                Integer.valueOf(BetController.SIZE));
+        final Page<Bet> bets = betService.findByBidId(bidId, pageRequest);
 
-        return betConverter.toFindAllDtos(bets);
+        return betConverter.toFindAllDTOs(bets.getContent());
     }
 
     Bid toEntity(final BidCreateDto dto) {

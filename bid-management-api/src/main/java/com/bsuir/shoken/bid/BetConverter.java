@@ -34,7 +34,7 @@ public class BetConverter {
         return dtoList.stream().map(this::toEntity).collect(Collectors.toList());
     }
 
-    List<BetFindAllDto> toFindAllDtos(final List<Bet> bets) {
+    List<BetFindAllDto> toFindAllDTOs(final List<Bet> bets) {
 
         if (bets == null) {
             return Collections.emptyList();
@@ -53,7 +53,7 @@ public class BetConverter {
         dto.setId(bet.getId());
         dto.setInvestor(toInvestorFindAllDto(bet.getInvestorId()));
         dto.setValue(bet.getValue());
-        dto.setDate(bet.getDate());
+        dto.setDateTime(bet.getDateTime());
 
         return dto;
     }

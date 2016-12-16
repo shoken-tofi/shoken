@@ -61,7 +61,7 @@ public class Bid extends BaseEntity {
 
     enum Status {
 
-        ACTIVE, DELETED, CANCELED
+        ACTIVE, DELETED, CANCELED, IN_PAYMENT
     }
 
     enum Type {

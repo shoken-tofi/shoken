@@ -18,5 +18,5 @@ class BetFindAllDto {
 
     private BigDecimal value;
 
-    private LocalDateTime date;
+    private LocalDateTime dateTime;
 }

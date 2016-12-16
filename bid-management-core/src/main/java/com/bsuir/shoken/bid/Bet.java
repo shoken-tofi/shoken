@@ -31,6 +31,6 @@ public class Bet extends BaseEntity {
     @Column(nullable = false, precision = 2, scale = 12)
     private final BigDecimal value;
 
-    @Column(nullable = false)
-    private LocalDateTime date = LocalDateTime.now();
+    @Column(name = "date_time", nullable = false)
+    private LocalDateTime dateTime = LocalDateTime.now();
 }

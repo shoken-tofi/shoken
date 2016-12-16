@@ -1,12 +1,15 @@
 package com.bsuir.shoken.bid;
 
-import lombok.AccessLevel;
+import com.bsuir.shoken.NoSuchEntityException;
+import com.bsuir.shoken.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
@@ -17,27 +20,34 @@ public class BetService {
 
     private final BetRepository betRepository;
 
+    private final BidRepository bidRepository;
+
     @Transactional(readOnly = true)
-    List<Bet> findByBidId(final Long bidId) {
-        return betRepository.findByBidIdOrderByValueDesc(bidId);
+    Page<Bet> findByBidId(final Long bidId, final Pageable pageable) {
+        return betRepository.findByBidIdOrderByValueDesc(bidId, pageable);
     }
 
     @Transactional(readOnly = true)
-    List<Bet> findByInvestorId(final Long investorId) {
-        return betRepository.findByInvestorIdOrderByValueDesc(investorId);
-    }
-
-    @Transactional(readOnly = true)
-    List<Bet> findByBidIdAndInvestorId(final Long bidId, final Long investorId) {
-        return betRepository.findByBidIdAndInvestorIdOrderByValueDesc(bidId, investorId);
-    }
-
-    @Transactional(readOnly = true)
-    Optional<Bet> findFirstByBidId(final Long bidId) {
+    Optional<Bet> findMaxByBidId(final Long bidId) {
         return betRepository.findFirstByBidIdOrderByValueDesc(bidId);
     }
 
-    public Bet create(final Bet bet) {
-        return betRepository.save(bet);
+    public Bet create(final Bet bet) throws NoSuchEntityException, ValidationException {
+
+        final Long bidId = bet.getBidId();
+        if (!bidRepository.exists(bidId)) {
+            throw new NoSuchEntityException("Bid with such id = " + bidId + " already exists.");
+        }
+
+        final BigDecimal currentMaxValue = betRepository.findFirstByBidIdOrderByValueDesc(bidId)
+                .orElseGet(Bet::new)
+                .getValue();
+
+        final BigDecimal value = bet.getValue();
+        if (currentMaxValue.compareTo(value) >= 0) {
+            throw new ValidationException("Bet value = " + value + "is less or equals to current max value.");
+        }
+
+        return betRepository.save(new Bet(bet.getInvestorId(), bidId, value));
     }
 }

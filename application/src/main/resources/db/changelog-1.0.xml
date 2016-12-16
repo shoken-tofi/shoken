@@ -123,7 +123,7 @@
             <column name="value" type="NUMERIC(12,2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="date" type="TIMESTAMP WITHOUT TIME ZONE">
+            <column name="date_time" type="TIMESTAMP WITHOUT TIME ZONE">
                 <constraints nullable="false"/>
             </column>
         </createTable>

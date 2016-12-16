@@ -13,5 +13,5 @@ class PriceDto {
 
     private final BigDecimal value;
 
-    private BigDecimal step;
+    private final BigDecimal step;
 }

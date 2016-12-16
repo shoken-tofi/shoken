@@ -33,10 +33,10 @@ class ApplicationInitializer {
 
         userInitializer.init();
 
-        for (int i = 0; i < BID_COUNT; i++) {
-            bidInitializer.init();
-        }
-
+//        for (int i = 0; i < BID_COUNT; i++) {
+//            bidInitializer.init();
+//        }
+//
 //        betInitializer.init();
 
         LOGGER.info("...initialization ended...");
