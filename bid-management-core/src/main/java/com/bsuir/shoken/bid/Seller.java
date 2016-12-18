@@ -11,10 +11,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "sellers")
-@SequenceGenerator(name = "entity_generator", sequenceName = "sellers_seq", allocationSize = 1)
+@SequenceGenerator(name = "entity_generator", sequenceName = "sellers_seq", allocationSize = 1, initialValue = 2)
 class Seller extends AuctionParticipant {
 
-    Seller(Long userId, String name) {
-        super(userId, name);
+    Seller(String name) {
+        super(name);
     }
 }

@@ -18,7 +18,7 @@ abstract class InvestorController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     InvestorFindAllDto get(@PathVariable Long id) {
 
-        final Investor investor = investorService.findOne(id);
+        final Investor investor = investorService.findById(id);
 
         return investorConverter.toFindAllDto(investor);
     }

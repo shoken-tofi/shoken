@@ -5,4 +5,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 @NoRepositoryBean
 interface InvestorRepository extends CrudRepository<Investor, Long> {
+
+    Investor findOneByName(final String username);
 }

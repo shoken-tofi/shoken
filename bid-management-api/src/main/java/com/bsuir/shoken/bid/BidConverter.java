@@ -24,7 +24,7 @@ import static org.apache.commons.io.FilenameUtils.getExtension;
 @Component
 public class BidConverter {
 
-    private final static String IMAGE_PATH = "/images/bids/";
+    final static String IMAGE_PATH = "/images/bids/";
 
     private final SellerService sellerService;
 
@@ -100,10 +100,10 @@ public class BidConverter {
 
     private String toImageUrl(final Bid.Image image) {
 
-        final String path = image.getPath();
+        final String name = image.getName();
 
-        return path.startsWith("http") ? path : configurationProperties.getImageServer().getName() + image.getPath()
-                + image.getName() + "." + image.getExtension().toString().toLowerCase();
+        return name.startsWith("http") ? name : configurationProperties.getImageServer().getName() + image.getPath()
+                + name + "." + image.getExtension().toString().toLowerCase();
     }
 
     private TimeLeftDto toTimeLeftDto(final LocalDateTime expirationDate) {
@@ -122,7 +122,7 @@ public class BidConverter {
 
     private SellerFindAllDto toSellerFindAllDto(final Long id) {
 
-        final Seller seller = sellerService.findOne(id);
+        final Seller seller = sellerService.findById(id);
 
         return sellerConverter.toFindAllDto(seller);
     }

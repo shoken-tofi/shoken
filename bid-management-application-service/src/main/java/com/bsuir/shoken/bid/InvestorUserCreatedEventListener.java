@@ -21,7 +21,7 @@ class InvestorUserCreatedEventListener implements ApplicationListener<UserCreate
             return;
         }
 
-        final Investor investor = new Investor(event.getId(), event.getUsername());
+        final Investor investor = new Investor(event.getUsername());
         investorService.create(investor);
     }
 }

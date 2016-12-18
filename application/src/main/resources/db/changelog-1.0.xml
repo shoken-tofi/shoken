@@ -36,10 +36,7 @@
                 <constraints primaryKey="true" primaryKeyName="pk_sellers"/>
             </column>
             <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="user_id" type="BIGINT">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
 
@@ -50,19 +47,16 @@
             <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
 
         <createTable tableName="bid_images">
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="pk_bid_images"/>
             </column>
-            <column name="path" type="VARCHAR(255)">
+            <column name="path" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="name" type="VARCHAR(255)"/>
             <column name="extension" type="VARCHAR(255)"/>
         </createTable>
 
@@ -128,10 +122,17 @@
             </column>
         </createTable>
 
-        <createSequence sequenceName="sellers_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="sellers_seq" startValue="2" incrementBy="1"/>
         <createSequence sequenceName="bid_images_seq" startValue="1" incrementBy="1"/>
         <createSequence sequenceName="bids_seq" startValue="1" incrementBy="1"/>
         <createSequence sequenceName="investors_seq" startValue="1" incrementBy="1"/>
         <createSequence sequenceName="bets_seq" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="bid-management-insert" author="Tsimafei.Markusenka">
+        <insert tableName="sellers">
+            <column name="id">1</column>
+            <column name="name">admin</column>
+        </insert>
     </changeSet>
 </databaseChangeLog>

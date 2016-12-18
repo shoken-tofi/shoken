@@ -1,13 +1,13 @@
 package com.bsuir.shoken.bid;
 
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.QueryByExampleExecutor;
 
 import java.util.Optional;
 
 @NoRepositoryBean
-interface BidRepository extends PagingAndSortingRepository<Bid, Long>, QueryByExampleExecutor<Bid> {
+interface BidRepository extends PagingAndSortingRepository<Bid, Long>, QueryDslPredicateExecutor<Bid> {
 
     Optional<Bid> findOneById(final Long id);
 }

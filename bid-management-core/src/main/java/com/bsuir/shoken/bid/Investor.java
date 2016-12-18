@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @SequenceGenerator(name = "entity_generator", sequenceName = "investors_seq", allocationSize = 1)
 class Investor extends AuctionParticipant {
 
-    Investor(Long userId, String name) {
-        super(userId, name);
+    Investor(String name) {
+        super(name);
     }
 }

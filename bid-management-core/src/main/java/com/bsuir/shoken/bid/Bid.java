@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -59,6 +60,10 @@ public class Bid extends BaseEntity {
 
     @Column(length = 2000)
     private String comment;
+
+    @OneToMany
+    @JoinColumn(name = "bid_id", nullable = false, insertable = false, updatable = false)
+    List<Bet> bets;
 
     enum Status {
 

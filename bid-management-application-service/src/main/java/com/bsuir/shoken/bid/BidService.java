@@ -2,6 +2,7 @@ package com.bsuir.shoken.bid;
 
 import com.bsuir.shoken.NoSuchEntityException;
 import com.bsuir.shoken.ValidationException;
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -11,11 +12,17 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ScheduledFuture;
+
+import static com.bsuir.shoken.bid.QBid.bid;
 
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 
@@ -32,11 +39,50 @@ public class BidService {
     private final ApplicationEventPublisher publisher;
 
     @Transactional(readOnly = true)
-    Page<Bid> findAll(final Pageable pageable) {
+    Page<Bid> findAll(final SearchCriteria criteria, final Pageable pageable) {
 
-        //TODO: search by criteria
+        final BooleanBuilder builder = new BooleanBuilder();
 
-        return bidRepository.findAll(pageable);
+        final String query = criteria.getQuery();
+        if (!StringUtils.isEmpty(query)) {
+            builder.and(bid.title.containsIgnoreCase(query).or(bid.description.containsIgnoreCase(query)));
+        }
+
+        final BigDecimal minBetValue = criteria.getMinBetPrice();
+        if (minBetValue != null) {
+            builder.and(bid.bets.any().value.goe(minBetValue).or(bid.startPrice.goe(minBetValue)));
+        }
+        final BigDecimal maxBetValue = criteria.getMaxBetPrice();
+        if (maxBetValue != null) {
+            builder.and(bid.bets.any().value.loe(maxBetValue).or(bid.startPrice.loe(maxBetValue)));
+        }
+
+        final List<Bid.Type> types = criteria.getBidTypes();
+        if (types != null && !types.isEmpty()) {
+            builder.and(bid.type.in(types));
+        }
+
+        final LocalDateTime minStartDate = criteria.getMinStartDate();
+        if (minStartDate != null) {
+            builder.and(bid.creationDate.loe(minStartDate));
+        }
+        final LocalDateTime maxStartDate = criteria.getMaxStartDate();
+        if (maxStartDate != null) {
+            builder.and(bid.creationDate.goe(maxStartDate));
+        }
+
+        final LocalDateTime minExpirationDate = criteria.getMinExpirationDate();
+        if (minExpirationDate != null) {
+            builder.and(bid.expirationDate.goe(minExpirationDate));
+        }
+        final LocalDateTime maxExpirationDate = criteria.getMaxExpirationDate();
+        if (maxExpirationDate != null) {
+            builder.and(bid.expirationDate.loe(maxExpirationDate));
+        }
+
+        builder.and(bid.status.eq(Bid.Status.ACTIVE));
+
+        return bidRepository.findAll(builder.getValue(), pageable);
     }
 
     @Transactional(readOnly = true)

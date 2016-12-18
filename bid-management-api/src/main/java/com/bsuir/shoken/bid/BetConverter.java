@@ -60,7 +60,7 @@ public class BetConverter {
 
     private InvestorFindAllDto toInvestorFindAllDto(final Long id) {
 
-        final Investor investor = investorService.findOne(id);
+        final Investor investor = investorService.findById(id);
 
         return investorConverter.toFindAllDto(investor);
     }

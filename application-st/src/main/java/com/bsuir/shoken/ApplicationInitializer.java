@@ -18,7 +18,7 @@ class ApplicationInitializer {
 
     private static final Logger LOGGER = getLogger(ApplicationInitializer.class);
 
-    private static final int BID_COUNT = 5;
+    private static final int BID_COUNT = 2;
 
     private final UserInitializer userInitializer;
 
@@ -33,9 +33,9 @@ class ApplicationInitializer {
 
         userInitializer.init();
 
-//        for (int i = 0; i < BID_COUNT; i++) {
-//            bidInitializer.init();
-//        }
+        for (int i = 0; i < BID_COUNT; i++) {
+            bidInitializer.init();
+        }
 //
 //        betInitializer.init();
 

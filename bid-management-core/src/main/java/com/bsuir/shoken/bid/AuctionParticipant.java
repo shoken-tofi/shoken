@@ -3,7 +3,8 @@ package com.bsuir.shoken.bid;
 import com.bsuir.shoken.BaseEntity;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -15,9 +16,6 @@ import javax.persistence.*;
 @MappedSuperclass
 abstract class AuctionParticipant extends BaseEntity {
 
-    @Column(name = "user_id", nullable = false)
-    private final Long userId;
-
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private final String name;
 }
