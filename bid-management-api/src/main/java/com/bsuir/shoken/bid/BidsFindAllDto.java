@@ -11,4 +11,6 @@ import java.util.List;
 class BidsFindAllDto {
 
     private List<BidFindAllDto> bids;
+
+    private long totalElements;
 }

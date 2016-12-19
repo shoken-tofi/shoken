@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -15,16 +16,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.bsuir.shoken.bid.ImageController.IMAGE_PATH;
 import static java.time.temporal.ChronoUnit.*;
 import static org.apache.commons.io.FilenameUtils.getBaseName;
 import static org.apache.commons.io.FilenameUtils.getExtension;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RequiredArgsConstructor
 
 @Component
 public class BidConverter {
-
-    final static String IMAGE_PATH = "/images/bids/";
 
     private final SellerService sellerService;
 
@@ -51,7 +52,7 @@ public class BidConverter {
         dto.setPrice(toPriceDto(bid.getId(), bid.getStartPrice()));
         dto.setImageUrl(toImageUrl(bid.getFeaturedImage()));
         dto.setTimeLeft(toTimeLeftDto(bid.getExpirationDate()));
-        dto.setPaymentType(bid.getPaymentType().toString().toLowerCase());
+        dto.setPaymentType(bid.getPaymentType().getName());
         dto.setSeller(toSellerFindAllDto(bid.getSellerId()));
         dto.setComment(bid.getComment());
         dto.setBets(toBetFindAllDTOs(bid.getId()));
@@ -82,7 +83,7 @@ public class BidConverter {
         dto.setPrice(toPriceDto(bid.getId(), bid.getStartPrice()));
         dto.setImageUrl(toImageUrl(bid.getFeaturedImage()));
         dto.setTimeLeft(toTimeLeftDto(bid.getExpirationDate()));
-        dto.setPaymentType(bid.getPaymentType().toString().toLowerCase());
+        dto.setPaymentType(bid.getPaymentType().getName());
         dto.setSeller(toSellerFindAllDto(bid.getSellerId()));
 
         return dto;
@@ -130,7 +131,7 @@ public class BidConverter {
     private List<BetFindAllDto> toBetFindAllDTOs(final Long bidId) {
 
         final Pageable pageRequest = new PageRequest(Integer.valueOf(BetController.PAGE) - 1,
-                Integer.valueOf(BetController.SIZE));
+                Integer.valueOf(BetController.SIZE), new Sort(DESC, "value"));
         final Page<Bet> bets = betService.findByBidId(bidId, pageRequest);
 
         return betConverter.toFindAllDTOs(bets.getContent());
@@ -155,7 +156,7 @@ public class BidConverter {
 
         final Bid bid = new Bid(dto.getSellerId(), dto.getTitle(), featureImage,
                 Bid.Type.valueOf(dto.getType().toUpperCase()), dto.getQuantity(), dto.getDescription(),
-                dto.getStartPrice(), LocalDateTime.of(dto.getExpirationDate(), now.toLocalTime()),
+                dto.getStartPrice(), dto.getExpirationDate(),
                 Bid.PaymentType.valueOf(dto.getPaymentType().toUpperCase()));
         bid.setCreationDate(now);
         bid.setComment(dto.getComment());

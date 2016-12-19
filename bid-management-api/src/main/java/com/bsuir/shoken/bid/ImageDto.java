@@ -2,15 +2,13 @@ package com.bsuir.shoken.bid;
 
 import lombok.*;
 
-import java.math.BigDecimal;
-
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 @EqualsAndHashCode
 @ToString
-class PriceDto {
+class ImageDto {
 
-    private final BigDecimal value;
+    private final String url;
 
-    private final BigDecimal step;
+    private final String imageName;
 }

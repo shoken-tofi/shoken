@@ -3,7 +3,7 @@ package com.bsuir.shoken.bid;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
@@ -26,7 +26,7 @@ public class BidCreateDto {
 
     private BigDecimal startPrice;
 
-    private LocalDate expirationDate;
+    private LocalDateTime expirationDate;
 
     private String paymentType;
 

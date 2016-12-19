@@ -20,7 +20,6 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ScheduledFuture;
 
 import static com.bsuir.shoken.bid.QBid.bid;
 
@@ -97,8 +96,8 @@ public class BidService {
 
         final Bid bidFromDatabase = bidRepository.save(bid);
 
-        final Date startDate = Date.from(bid.getExpirationDate().atZone(ZoneId.systemDefault()).toInstant());
-        final ScheduledFuture<?> scheduledFuture = taskScheduler.schedule(() -> expire(bidFromDatabase), startDate);
+        final Date expirationDate = Date.from(bid.getExpirationDate().atZone(ZoneId.systemDefault()).toInstant());
+        taskScheduler.schedule(() -> expire(bidFromDatabase), expirationDate);
 
         return bidFromDatabase;
     }

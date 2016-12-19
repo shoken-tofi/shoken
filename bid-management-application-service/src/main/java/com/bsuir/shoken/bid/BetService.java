@@ -24,7 +24,7 @@ public class BetService {
 
     @Transactional(readOnly = true)
     Page<Bet> findByBidId(final Long bidId, final Pageable pageable) {
-        return betRepository.findByBidIdOrderByValueDesc(bidId, pageable);
+        return betRepository.findByBidId(bidId, pageable);
     }
 
     @Transactional(readOnly = true)

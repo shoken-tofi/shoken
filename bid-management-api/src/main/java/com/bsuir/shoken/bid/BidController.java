@@ -7,11 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 
@@ -42,7 +41,7 @@ abstract class BidController {
         final SearchCriteria searchCriteria = searchCriteriaConverter.toEntity(searchCriteriaDto);
         final Page<Bid> bids = bidService.findAll(searchCriteria, pageRequest);
 
-        return new BidsFindAllDto(bidConverter.toFindAllDTOs(bids.getContent()));
+        return new BidsFindAllDto(bidConverter.toFindAllDTOs(bids.getContent()), bids.getTotalElements());
     }
 
     @GetMapping(value = "/{id}")
@@ -54,31 +53,17 @@ abstract class BidController {
     }
 
     @PostMapping
-    public BidFindAllDto create(@RequestParam("file") MultipartFile image, @RequestParam("data") BidCreateDto dto)
+    public BidFindAllDto create(@RequestBody BidCreateDto dto)
             throws ValidationException, NoSuchEntityException {
 
         final String username = "admin";
         final Seller seller = sellerService.findByName(username);
         dto.setSellerId(seller.getId());
 
-        final String imageNme = image.getOriginalFilename();
-        dto.setImageName(imageNme);
-
         final Bid bid = bidConverter.toEntity(dto);
         final Bid bidFromDatabase = bidService.create(bid);
 
-        uploadImage(image, BidConverter.IMAGE_PATH + bidFromDatabase.getId() + "/" + imageNme);
-
         return bidConverter.toFindAllDto(bidFromDatabase);
-    }
-
-    private void uploadImage(final MultipartFile image, final String path) {
-
-        try {
-            image.transferTo(new File(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @DeleteMapping(value = "/{id}")
@@ -91,7 +76,7 @@ abstract class BidController {
                                          @RequestParam(required = false, defaultValue = BetController.PAGE) int page,
                                          @RequestParam(required = false, defaultValue = BetController.SIZE) int size) {
 
-        final Pageable pageRequest = new PageRequest(--page, size);
+        final Pageable pageRequest = new PageRequest(--page, size, new Sort(DESC, "value"));
         final Page<Bet> bets = betService.findByBidId(bidId, pageRequest);
 
         return new BetsFindAllDto(betConverter.toFindAllDTOs(bets.getContent()));

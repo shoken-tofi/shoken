@@ -77,7 +77,17 @@ public class Bid extends BaseEntity {
 
     enum PaymentType {
 
-        PAY_PAL
+        PAYPAL("PayPal");
+
+        private String name;
+
+        PaymentType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 
     @NoArgsConstructor(access = AccessLevel.PACKAGE)
