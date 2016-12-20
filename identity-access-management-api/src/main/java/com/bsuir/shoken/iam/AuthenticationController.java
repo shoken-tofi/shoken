@@ -19,7 +19,7 @@ abstract class AuthenticationController {
     private final SecurityContextService securityContextService;
     
     @PostMapping("/register")
-    UserDto register(@RequestBody RegisterDto dto) throws AlreadyExistingEntityException {
+    public UserDto register(@RequestBody RegisterDto dto) throws AlreadyExistingEntityException {
 
         final User user = userConverter.toEntity(dto);
         final User userFromDatabase = userService.create(user);

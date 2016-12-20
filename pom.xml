@@ -46,6 +46,7 @@
         <module>bid-management-service-gateway</module>
         <module>bid-management-service-gateway-rest-adapter</module>
         <module>application-st</module>
+        <module>bid-management-event</module>
     </modules>
 
     <dependencyManagement>

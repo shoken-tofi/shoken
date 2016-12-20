@@ -28,12 +28,12 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 public class BidConverter {
 
     private final SellerService sellerService;
-
     private final SellerConverter sellerConverter;
 
     private final BetService betService;
-
     private final BetConverter betConverter;
+
+    private final StepService stepService;
 
     private final ShokenConfigurationProperties configurationProperties;
 
@@ -94,7 +94,7 @@ public class BidConverter {
         final Optional<Bet> bet = betService.findMaxByBidId(bidId);
         final BigDecimal price = bet.map(Bet::getValue).orElse(startPrice);
 
-        final BigDecimal step = BigDecimal.ONE; //TODO: get from database
+        final BigDecimal step = stepService.findByPredicate(price).getValue();
 
         return new PriceDto(price, step);
     }

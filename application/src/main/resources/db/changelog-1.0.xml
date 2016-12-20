@@ -122,17 +122,89 @@
             </column>
         </createTable>
 
-        <createSequence sequenceName="sellers_seq" startValue="2" incrementBy="1"/>
+        <createTable tableName="steps">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_steps"/>
+            </column>
+            <column name="low" type="NUMERIC(12,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="high" type="NUMERIC(12,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="NUMERIC(12,2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="sellers_seq" startValue="1" incrementBy="1"/>
         <createSequence sequenceName="bid_images_seq" startValue="1" incrementBy="1"/>
         <createSequence sequenceName="bids_seq" startValue="1" incrementBy="1"/>
         <createSequence sequenceName="investors_seq" startValue="1" incrementBy="1"/>
         <createSequence sequenceName="bets_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="steps_seq" startValue="1" incrementBy="1"/>
     </changeSet>
 
     <changeSet id="bid-management-insert" author="Tsimafei.Markusenka">
-        <insert tableName="sellers">
+        <insert tableName="steps">
             <column name="id">1</column>
-            <column name="name">admin</column>
+            <column name="low">0.01</column>
+            <column name="high">0.99</column>
+            <column name="value">0.05</column>
+        </insert>
+        <insert tableName="steps">
+            <column name="id">2</column>
+            <column name="low">1</column>
+            <column name="high">4.99</column>
+            <column name="value">0.25</column>
+        </insert>
+        <insert tableName="steps">
+            <column name="id">3</column>
+            <column name="low">5</column>
+            <column name="high">24.99</column>
+            <column name="value">0.50</column>
+        </insert>
+        <insert tableName="steps">
+            <column name="id">4</column>
+            <column name="low">25</column>
+            <column name="high">99.99</column>
+            <column name="value">1</column>
+        </insert>
+        <insert tableName="steps">
+            <column name="id">5</column>
+            <column name="low">100</column>
+            <column name="high">249.99</column>
+            <column name="value">2.50</column>
+        </insert>
+        <insert tableName="steps">
+            <column name="id">6</column>
+            <column name="low">250</column>
+            <column name="high">499.99</column>
+            <column name="value">5</column>
+        </insert>
+        <insert tableName="steps">
+            <column name="id">7</column>
+            <column name="low">500</column>
+            <column name="high">999.99</column>
+            <column name="value">10</column>
+        </insert>
+        <insert tableName="steps">
+            <column name="id">8</column>
+            <column name="low">1000</column>
+            <column name="high">2499.99</column>
+            <column name="value">25</column>
+        </insert>
+        <insert tableName="steps">
+            <column name="id">9</column>
+            <column name="low">2500</column>
+            <column name="high">4999.99</column>
+            <column name="value">50</column>
+        </insert>
+        <insert tableName="steps">
+            <column name="id">10</column>
+            <column name="low">5000</column>
+            <column name="high">1000000</column>
+            <column name="value">100</column>
         </insert>
     </changeSet>
 </databaseChangeLog>

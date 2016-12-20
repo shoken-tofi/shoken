@@ -16,7 +16,7 @@ abstract class SellerController {
     private final SellerConverter sellerConverter;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    SellerFindAllDto get(@PathVariable Long id) {
+    public SellerFindAllDto get(@PathVariable Long id) {
 
         final Seller seller = sellerService.findById(id);
 

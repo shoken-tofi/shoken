@@ -2,12 +2,14 @@ package com.bsuir.shoken.bid;
 
 import com.bsuir.shoken.NoSuchEntityException;
 import com.bsuir.shoken.ValidationException;
+import com.bsuir.shoken.iam.SecurityContextService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
@@ -28,7 +30,7 @@ abstract class BidController {
 
     private final SearchCriteriaConverter searchCriteriaConverter;
 
-    private final InvestorService investorService;
+    private final SecurityContextService securityContextService;
 
     private final SellerService sellerService;
 
@@ -52,11 +54,12 @@ abstract class BidController {
         return bidConverter.toFindOneDto(bid);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public BidFindAllDto create(@RequestBody BidCreateDto dto)
             throws ValidationException, NoSuchEntityException {
 
-        final String username = "admin";
+        final String username = securityContextService.getAuthentication();
         final Seller seller = sellerService.findByName(username);
         dto.setSellerId(seller.getId());
 
@@ -66,6 +69,7 @@ abstract class BidController {
         return bidConverter.toFindAllDto(bidFromDatabase);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable Long id) throws ValidationException, NoSuchEntityException {
         bidService.delete(id);

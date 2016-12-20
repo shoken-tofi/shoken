@@ -18,12 +18,22 @@
             <artifactId>bid-management-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.bsuir.tofi</groupId>
+            <artifactId>bid-management-event</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.bsuir.tofi</groupId>
             <artifactId>identity-access-management-event</artifactId>
             <version>${project.version}</version>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.bsuir.tofi</groupId>
+            <artifactId>identity-access-management-application-service</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>

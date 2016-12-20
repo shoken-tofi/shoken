@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "sellers")
-@SequenceGenerator(name = "entity_generator", sequenceName = "sellers_seq", allocationSize = 1, initialValue = 2)
+@SequenceGenerator(name = "entity_generator", sequenceName = "sellers_seq", allocationSize = 1)
 class Seller extends AuctionParticipant {
 
     Seller(String name) {

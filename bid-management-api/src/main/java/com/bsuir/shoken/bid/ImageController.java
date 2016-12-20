@@ -4,6 +4,7 @@ import com.bsuir.shoken.ShokenConfigurationProperties;
 import com.bsuir.shoken.ValidationException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ abstract class ImageController {
 
     private final ShokenConfigurationProperties configurationProperties;
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/upload")
     public ImageDto upload(@RequestParam("file") MultipartFile image) throws ValidationException {
 

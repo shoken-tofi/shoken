@@ -8,7 +8,7 @@ public class UserCreatedEvent extends ApplicationEvent {
 
     private String username;
 
-    public UserCreatedEvent(final User source) {
+    public UserCreatedEvent(User source) {
         super(source);
         this.username = source.getLogin();
     }

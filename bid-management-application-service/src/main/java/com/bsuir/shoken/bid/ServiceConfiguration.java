@@ -1,4 +1,4 @@
-package com.bsuir.shoken.iam;
+package com.bsuir.shoken.bid;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

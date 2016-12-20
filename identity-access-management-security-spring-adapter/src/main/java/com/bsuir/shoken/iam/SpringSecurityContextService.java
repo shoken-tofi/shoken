@@ -8,7 +8,17 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 
 @Component
-class SpringSecurityContextService implements SecurityContextService {
+public class SpringSecurityContextService implements SecurityContextService {
+
+    @Override
+    public boolean isAuthenticated() {
+        return SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+    }
+
+    @Override
+    public String getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
 
     @Override
     public void setAuthentication(final User user) {

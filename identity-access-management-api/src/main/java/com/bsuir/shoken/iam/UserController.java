@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,9 +24,10 @@ abstract class UserController {
 
     private final UserConverter userConverter;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.GET)
-    UsersDto get(@RequestParam(required = false, defaultValue = PAGE) int page,
-                 @RequestParam(required = false, defaultValue = SIZE) int size) {
+    public UsersDto get(@RequestParam(required = false, defaultValue = PAGE) int page,
+                        @RequestParam(required = false, defaultValue = SIZE) int size) {
 
         final Pageable pageRequest = new PageRequest(--page, size);
         final Page<User> users = userService.findAll(pageRequest);
@@ -33,8 +35,9 @@ abstract class UserController {
         return new UsersDto(userConverter.toDTOs(users.getContent()));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    UserDto get(@PathVariable Long id) {
+    public UserDto get(@PathVariable Long id) {
 
         final User user = userService.findById(id);
 

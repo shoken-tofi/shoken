@@ -2,6 +2,7 @@ package com.bsuir.shoken.bid;
 
 import com.bsuir.shoken.NoSuchEntityException;
 import com.bsuir.shoken.ValidationException;
+import com.bsuir.shoken.iam.SecurityContextService;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,10 @@ public class BidService {
     private final BetRepository betRepository;
 
     private final TaskScheduler taskScheduler;
+
+    private final SecurityContextService securityContextService;
+
+    private final SellerRepository sellerRepository;
 
     private final ApplicationEventPublisher publisher;
 
@@ -85,11 +90,39 @@ public class BidService {
     }
 
     @Transactional(readOnly = true)
-    Bid findOne(final Long id) throws Exception {
+    Bid findOne(final Long id) throws NoSuchEntityException, ValidationException {
 
-        final Optional<Bid> bid = bidRepository.findOneById(id);
+        final Bid result = bidRepository.findOneById(id).orElseThrow(() ->
+                new NoSuchEntityException("Bid with such id = " + id + " doesn't exists."));
 
-        return bid.orElseThrow(() -> new NoSuchEntityException("Bid with such id = " + id + " doesn't exists."));
+        if (Bid.Status.ACTIVE == result.getStatus()) {
+            return result;
+        }
+
+        if (!securityContextService.isAuthenticated()) {
+            throw new ValidationException("Access to bid with such id = " + id + " denied.");
+        }
+
+        final String username = securityContextService.getAuthentication();
+
+        switch (result.getStatus()) {
+            case DELETED:
+
+                final Seller seller = sellerRepository.findOneByName(username)
+                        .orElseThrow(() ->
+                                new NoSuchEntityException("Seller with such name = " + username + " doesn't exists."));
+                if (!result.getSellerId().equals(seller.getId())) {
+                    throw new ValidationException("Access to bid with such id = " + id + " denied.");
+                }
+
+                break;
+            case CANCELED:
+            case IN_PAYMENT:
+            case FINISHED:
+                break;
+        }
+
+        return result;
     }
 
     public Bid create(final Bid bid) {
@@ -109,9 +142,11 @@ public class BidService {
 
         final Optional<Bet> maxBet = betRepository.findFirstByBidIdOrderByValueDesc(bid.getId());
         if (!maxBet.isPresent()) {
-            status = Bid.Status.CANCELED;
+            status = Bid.Status.DELETED;
         } else {
             status = Bid.Status.IN_PAYMENT;
+
+            publisher.publishEvent(new FinishedBidVO(bid, maxBet.get()));
         }
 
         bid.setStatus(status);

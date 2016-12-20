@@ -1,6 +1,10 @@
 package com.bsuir.shoken.iam;
 
-interface SecurityContextService {
+public interface SecurityContextService {
+
+    boolean isAuthenticated();
+
+    String getAuthentication();
 
     void setAuthentication(final User user);
 }
