@@ -30,6 +30,82 @@
         <createSequence sequenceName="users_seq" startValue="1" incrementBy="1"/>
     </changeSet>
 
+    <changeSet id="payment-management-schema" author="Tsimafei.Markusenka">
+        <createTable tableName="bills">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_bills"/>
+            </column>
+            <column name="value" type="NUMERIC(20,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="NUMERIC(12,2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="vendors">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_vendors"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bill_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_vendors_bill_id" referencedColumnNames="id"
+                             referencedTableName="bills"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="vendees">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_vendees"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bill_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_vendees_bill_id" referencedColumnNames="id"
+                             referencedTableName="bills"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="deals">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="pk_deals"/>
+            </column>
+            <column name="vendor_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_deals_vendors_vendor_id"
+                             referencedColumnNames="id" referencedTableName="vendors"/>
+            </column>
+            <column name="vendee_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_deals_vendees_vendee_id"
+                             referencedColumnNames="id" referencedTableName="vendees"/>
+            </column>
+            <column name="bid_id" type="BIGINT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="amount" type="NUMERIC(12,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="bills_seq" startValue="2" incrementBy="1"/>
+        <createSequence sequenceName="vendors_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="vendees_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="deals_seq" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="payment-management-insert" author="Tsimafei.Markusenka">
+        <insert tableName="bills">
+            <column name="id">1</column>
+            <column name="value">10000000000000000000</column>
+            <column name="amount">1000000</column>
+        </insert>
+    </changeSet>
+
     <changeSet id="bid-management-schema" author="Tsimafei.Markusenka">
         <createTable tableName="sellers">
             <column name="id" type="BIGINT">

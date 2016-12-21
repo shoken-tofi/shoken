@@ -1,20 +1,19 @@
-package com.bsuir.shoken.bid;
+package com.bsuir.shoken;
 
-import com.bsuir.shoken.BaseEntity;
 import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-@NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(force = true)
+@RequiredArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 
 @MappedSuperclass
-abstract class AuctionParticipant extends BaseEntity {
+public abstract class AuctionParticipant extends BaseEntity {
 
     @Column(nullable = false, unique = true)
     private final String name;

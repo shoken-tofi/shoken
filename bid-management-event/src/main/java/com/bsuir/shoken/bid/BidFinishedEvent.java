@@ -1,16 +1,18 @@
 package com.bsuir.shoken.bid;
 
+import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 import java.math.BigDecimal;
 
+@Getter
 public class BidFinishedEvent extends ApplicationEvent {
 
     private Long id;
 
-    private Long sellerId;
+    private String seller;
 
-    private Long investorId;
+    private String investor;
 
     private BigDecimal totalPrice;
 
@@ -19,10 +21,10 @@ public class BidFinishedEvent extends ApplicationEvent {
 
         final Bid bid = source.getBid();
         id = bid.getId();
-        sellerId = bid.getSellerId();
+        seller = source.getSeller();
 
         final Bet maxBet = source.getMaxBet();
-        investorId = maxBet.getInvestorId();
+        investor = source.getInvestor();
         totalPrice = maxBet.getValue();
     }
 }

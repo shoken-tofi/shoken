@@ -27,16 +27,11 @@ abstract class BetController {
 
     private final InvestorService investorService;
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('USER')")
     @PostMapping
     public BetFindAllDto create(@RequestBody BetCreateDto dto) throws ValidationException, NoSuchEntityException {
 
         final String username = securityContextService.getUsername();
-
-        final Seller seller = sellerService.findByName(username);
-        if (seller != null) {
-            throw new ValidationException("Seller can't create bet.");
-        }
 
         final Investor investor = investorService.findByName(username);
         dto.setInvestorId(investor.getId());

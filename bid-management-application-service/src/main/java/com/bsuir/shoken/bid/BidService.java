@@ -4,6 +4,7 @@ import com.bsuir.shoken.NoSuchEntityException;
 import com.bsuir.shoken.ValidationException;
 import com.bsuir.shoken.iam.SecurityContextService;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -21,6 +22,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.bsuir.shoken.bid.QBid.bid;
 
@@ -45,34 +47,32 @@ public class BidService {
     private final ApplicationEventPublisher publisher;
 
     @Transactional(readOnly = true)
-    Page<Bid> findAll(final SearchCriteria criteria, final Pageable pageable) {
+    BidsVO findAll(final SearchCriteria criteria, final Pageable pageable) {
 
         final BooleanBuilder builder = buildPredicate(criteria);
 
-        return bidRepository.findAll(builder.getValue(), pageable);
+        return getBidsVO(builder.getValue(), pageable);
     }
 
     @Transactional(readOnly = true)
-    Page<Bid> findAllForSeller(final Long sellerId, final SearchCriteria criteria, final Pageable pageable) {
+    BidsVO findAllForSeller(final Long sellerId, final SearchCriteria criteria, final Pageable pageable) {
 
         final BooleanBuilder builder = buildPredicate(criteria);
-
         builder.and(bid.sellerId.eq(sellerId));
 
-        return bidRepository.findAll(builder.getValue(), pageable);
+        return getBidsVO(builder.getValue(), pageable);
     }
 
     @Transactional(readOnly = true)
-    Page<Bid> findAllForInvestor(final Long investorId, final SearchCriteria criteria, final Pageable pageable) {
+    BidsVO findAllForInvestor(final Long investorId, final SearchCriteria criteria, final Pageable pageable) {
 
         final BooleanBuilder builder = buildPredicate(criteria);
-
         builder.and(bid.bets.any().investorId.eq(investorId));
         if (Bid.Status.ACTIVE != criteria.getStatus()) {
-            builder.and(bid.bets.any().value.eq(bid.bets.any().value.max()));
+            builder.and(bid.winnerId.eq(investorId));
         }
 
-        return bidRepository.findAll(builder.getValue(), pageable);
+        return getBidsVO(builder.getValue(), pageable);
     }
 
     private BooleanBuilder buildPredicate(final SearchCriteria criteria) {
@@ -121,18 +121,44 @@ public class BidService {
         return builder;
     }
 
+    private BidsVO getBidsVO(final Predicate predicate, final Pageable pageable) {
+
+        final Page<Bid> bids = bidRepository.findAll(predicate, pageable);
+        List<BidVO> bidVOs = bids.getContent().stream()
+                .map(element -> {
+                    BidVO bidVO = null;
+                    try {
+                        bidVO = getBidVO(element);
+                    } catch (NoSuchEntityException | ValidationException e) {
+                        e.printStackTrace();
+                    }
+
+                    return bidVO;
+                })
+                .collect(Collectors.toList());
+
+        return new BidsVO(bidVOs, bids.getTotalElements());
+    }
+
     @Transactional(readOnly = true)
     BidVO findOne(final Long id) throws NoSuchEntityException, ValidationException {
 
         final Bid bid = bidRepository.findOneById(id).orElseThrow(() ->
                 new NoSuchEntityException("Bid with such id = " + id + " doesn't exists."));
 
+        return getBidVO(bid);
+    }
+
+    private BidVO getBidVO(final Bid bid) throws NoSuchEntityException, ValidationException {
+
+        final Long id = bid.getId();
+
         if (!securityContextService.isAuthenticated()) {
             if (Bid.Status.ACTIVE != bid.getStatus()) {
                 throw new ValidationException("Access to bid with such id = " + id + " denied.");
             }
 
-            return new BidVO(bid, false, false);
+            return new BidVO(bid, false, true);
         }
 
         if (securityContextService.isAdmin()) {
@@ -210,7 +236,11 @@ public class BidService {
         } else {
             status = Bid.Status.IN_PAYMENT;
 
-            publisher.publishEvent(new BidFinishedEventVO(bid, maxBet.get()));
+            final Bet bet = maxBet.get();
+
+            publisher.publishEvent(new BidFinishedEventVO(bid, bet,
+                    sellerRepository.findOne(bid.getSellerId()).getName(),
+                    investorRepository.findOne(bet.getInvestorId()).getName()));
         }
 
         bid.setStatus(status);

@@ -67,7 +67,7 @@ public class BidConverter {
         return dto;
     }
 
-    List<BidFindAllDto> toFindAllDTOs(final List<Bid> bids) {
+    List<BidFindAllDto> toFindAllDTOs(final List<BidVO> bids) {
 
         if (bids == null) {
             return Collections.emptyList();
@@ -76,8 +76,13 @@ public class BidConverter {
         return bids.stream().map(this::toFindAllDto).collect(Collectors.toList());
     }
 
-    BidFindAllDto toFindAllDto(final Bid bid) {
+    private BidFindAllDto toFindAllDto(final BidVO vo) {
 
+        if (vo == null) {
+            return null;
+        }
+
+        final Bid bid = vo.getBid();
         if (bid == null) {
             return null;
         }
@@ -92,6 +97,8 @@ public class BidConverter {
         dto.setTimeLeft(toTimeLeftDto(bid.getExpirationDate()));
         dto.setPaymentType(bid.getPaymentType().getName());
         dto.setSeller(toSellerFindAllDto(bid.getSellerId()));
+        dto.setCanDelete(vo.isCanDelete());
+        dto.setCanBet(vo.isCanBet());
 
         return dto;
     }
@@ -144,6 +151,15 @@ public class BidConverter {
         return betConverter.toFindAllDTOs(bets.getContent());
     }
 
+    public List<Bid> toEntities(final List<BidCreateDto> dtoList) {
+
+        if (dtoList == null) {
+            return Collections.emptyList();
+        }
+
+        return dtoList.stream().map(this::toEntity).collect(Collectors.toList());
+    }
+
     Bid toEntity(final BidCreateDto dto) {
 
         if (dto == null) {
@@ -169,14 +185,5 @@ public class BidConverter {
         bid.setComment(dto.getComment());
 
         return bid;
-    }
-
-    public List<Bid> toEntities(final List<BidCreateDto> dtoList) {
-
-        if (dtoList == null) {
-            return Collections.emptyList();
-        }
-
-        return dtoList.stream().map(this::toEntity).collect(Collectors.toList());
     }
 }

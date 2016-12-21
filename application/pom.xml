@@ -104,6 +104,26 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!--PAYMENT MANAGEMENT-->
+        <dependency>
+            <groupId>com.bsuir.tofi</groupId>
+            <artifactId>payment-management-jpa-adapter</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bsuir.tofi</groupId>
+            <artifactId>payment-management-event</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bsuir.tofi</groupId>
+            <artifactId>payment-management-api-rest-adapter</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
         <!--ST-->
         <dependency>
             <groupId>com.bsuir.tofi</groupId>

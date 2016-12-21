@@ -41,9 +41,9 @@ abstract class BidController {
 
         final Pageable pageRequest = new PageRequest(--page, size);
         final SearchCriteria searchCriteria = searchCriteriaConverter.toEntity(searchCriteriaDto);
-        final Page<Bid> bids = bidService.findAll(searchCriteria, pageRequest);
+        final BidsVO bids = bidService.findAll(searchCriteria, pageRequest);
 
-        return new BidsFindAllDto(bidConverter.toFindAllDTOs(bids.getContent()), bids.getTotalElements());
+        return new BidsFindAllDto(bidConverter.toFindAllDTOs(bids.getBids()), bids.getTotalElements());
     }
 
     @GetMapping(value = "/{id}")
@@ -56,17 +56,14 @@ abstract class BidController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public BidFindAllDto create(@RequestBody BidCreateDto dto)
-            throws ValidationException, NoSuchEntityException {
+    public void create(@RequestBody BidCreateDto dto) throws ValidationException, NoSuchEntityException {
 
         final String username = securityContextService.getUsername();
         final Seller seller = sellerService.findByName(username);
         dto.setSellerId(seller.getId());
 
         final Bid bid = bidConverter.toEntity(dto);
-        final Bid bidFromDatabase = bidService.create(bid);
-
-        return bidConverter.toFindAllDto(bidFromDatabase);
+        bidService.create(bid);
     }
 
     @PreAuthorize("isAuthenticated()")

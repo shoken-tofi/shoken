@@ -1,5 +1,6 @@
 package com.bsuir.shoken.bid;
 
+import com.bsuir.shoken.AuctionParticipant;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

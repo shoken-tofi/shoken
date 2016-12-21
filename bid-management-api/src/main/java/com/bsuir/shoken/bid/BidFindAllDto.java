@@ -26,4 +26,8 @@ class BidFindAllDto {
     private String paymentType;
 
     private SellerFindAllDto seller;
+
+    private boolean canDelete;
+
+    private boolean canBet;
 }

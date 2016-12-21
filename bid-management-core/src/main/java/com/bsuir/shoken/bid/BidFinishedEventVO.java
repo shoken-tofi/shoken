@@ -11,4 +11,8 @@ class BidFinishedEventVO {
     private final Bid bid;
 
     private final Bet maxBet;
+
+    private final String seller;
+
+    private final String investor;
 }

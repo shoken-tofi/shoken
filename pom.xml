@@ -47,6 +47,12 @@
         <module>bid-management-service-gateway-rest-adapter</module>
         <module>application-st</module>
         <module>bid-management-event</module>
+        <module>payment-management-core</module>
+        <module>payment-management-jpa-adapter</module>
+        <module>payment-management-application-service</module>
+        <module>payment-management-api</module>
+        <module>payment-management-api-rest-adapter</module>
+        <module>payment-management-event</module>
     </modules>
 
     <dependencyManagement>

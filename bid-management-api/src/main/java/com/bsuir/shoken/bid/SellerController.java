@@ -4,7 +4,6 @@ import com.bsuir.shoken.NoSuchEntityException;
 import com.bsuir.shoken.iam.SecurityContextService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,8 +44,8 @@ abstract class SellerController {
 
         final Pageable pageRequest = new PageRequest(--page, size);
         final SearchCriteria searchCriteria = searchCriteriaConverter.toEntity(searchCriteriaDto);
-        final Page<Bid> bids = bidService.findAllForSeller(seller.getId(), searchCriteria, pageRequest);
+        final BidsVO bids = bidService.findAllForSeller(seller.getId(), searchCriteria, pageRequest);
 
-        return new BidsFindAllDto(bidConverter.toFindAllDTOs(bids.getContent()), bids.getTotalElements());
+        return new BidsFindAllDto(bidConverter.toFindAllDTOs(bids.getBids()), bids.getTotalElements());
     }
 }
