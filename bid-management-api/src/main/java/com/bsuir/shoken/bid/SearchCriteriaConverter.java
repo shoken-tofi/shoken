@@ -50,6 +50,7 @@ class SearchCriteriaConverter {
         }
 
         final List<String> bidTypes = dto.getBidTypes();
+        final String status = dto.getStatus();
 
         return new SearchCriteria(dto.getQuery(), dto.getMinBetPrice(), dto.getMaxBetPrice(),
                 bidTypes == null ? null : bidTypes
@@ -59,6 +60,7 @@ class SearchCriteriaConverter {
                 minStartDateSecondsGone == 0 ? null : LocalDateTime.now().minusSeconds(minStartDateSecondsGone),
                 maxStartDateSecondsGone == 0 ? null : LocalDateTime.now().minusSeconds(maxStartDateSecondsGone),
                 minExpirationDateSecondsLeft == 0 ? null : LocalDateTime.now().plusSeconds(minExpirationDateSecondsLeft),
-                maxExpirationDateSecondsLeft == 0 ? null : LocalDateTime.now().plusSeconds(maxExpirationDateSecondsLeft));
+                maxExpirationDateSecondsLeft == 0 ? null : LocalDateTime.now().plusSeconds(maxExpirationDateSecondsLeft),
+                status == null ? Bid.Status.ACTIVE : Bid.Status.valueOf(status.toUpperCase()));
     }
 }

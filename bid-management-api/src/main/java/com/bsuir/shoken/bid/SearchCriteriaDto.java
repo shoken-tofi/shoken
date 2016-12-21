@@ -24,4 +24,6 @@ class SearchCriteriaDto {
 
     private BigDecimal minExpirationDateHoursLeft;
     private BigDecimal maxExpirationDateHoursLeft;
+
+    private String status;
 }

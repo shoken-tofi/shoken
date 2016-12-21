@@ -2,17 +2,17 @@ package com.bsuir.shoken;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
 @Component
-class ApplicationCorsFilter extends CorsFilter {
+public class ApplicationCorsFilter extends CorsFilter {
 
-    ApplicationCorsFilter() {
+    public ApplicationCorsFilter() {
         super(configurationSource());
     }
 
-    private static UrlBasedCorsConfigurationSource configurationSource() {
+    private static ResourceHttpRequestHandler configurationSource() {
 
         final CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
@@ -20,8 +20,8 @@ class ApplicationCorsFilter extends CorsFilter {
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
 
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfiguration);
+        final ResourceHttpRequestHandler source = new ResourceHttpRequestHandler();
+        source.setCorsConfiguration(corsConfiguration);
 
         return source;
     }

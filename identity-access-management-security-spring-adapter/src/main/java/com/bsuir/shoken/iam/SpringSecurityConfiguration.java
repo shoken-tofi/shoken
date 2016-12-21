@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE, onConstructor = @__({@Autowired}))
 
@@ -49,6 +50,8 @@ class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().anyRequest().permitAll()
                 .and()
                 .formLogin().successHandler(successHandler).failureHandler(failureHandler)
+                .and()
+                .logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint())
                 .and()

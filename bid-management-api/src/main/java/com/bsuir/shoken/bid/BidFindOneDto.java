@@ -34,4 +34,8 @@ class BidFindOneDto {
     private String comment;
 
     private List<BetFindAllDto> bets;
+
+    private boolean canDelete;
+
+    private boolean canBet;
 }

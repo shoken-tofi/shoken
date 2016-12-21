@@ -1,5 +1,6 @@
 package com.bsuir.shoken.bid;
 
+import com.bsuir.shoken.NoSuchEntityException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,9 @@ class InvestorService {
     }
 
     @Transactional(readOnly = true)
-    Investor findByName(final String username) {
-        return investorRepository.findOneByName(username);
+    Investor findByName(final String name) throws NoSuchEntityException {
+        return investorRepository.findOneByName(name)
+                .orElseThrow(() -> new NoSuchEntityException("Investor with such name = " + name + " doesn't exists."));
     }
 
     Investor create(final Investor investor) {

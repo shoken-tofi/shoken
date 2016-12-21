@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 class UserRestController extends UserController {
 
     @Autowired
-    UserRestController(UserService userService, UserConverter userConverter) {
-        super(userService, userConverter);
+    UserRestController(UserService userService, UserConverter userConverter,
+                       SecurityContextService securityContextService) {
+        super(userService, userConverter, securityContextService);
     }
 }

@@ -24,4 +24,6 @@ class SearchCriteria {
 
     private final LocalDateTime minExpirationDate;
     private final LocalDateTime maxExpirationDate;
+
+    private final Bid.Status status;
 }

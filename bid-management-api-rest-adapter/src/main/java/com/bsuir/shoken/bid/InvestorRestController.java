@@ -1,5 +1,6 @@
 package com.bsuir.shoken.bid;
 
+import com.bsuir.shoken.iam.SecurityContextService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -7,7 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 class InvestorRestController extends InvestorController {
 
     @Autowired
-    InvestorRestController(InvestorService investorService, InvestorConverter investorConverter) {
-        super(investorService, investorConverter);
+    InvestorRestController(InvestorService investorService, InvestorConverter investorConverter, BidService bidService,
+                           BidConverter bidConverter, SecurityContextService securityContextService,
+                           SearchCriteriaConverter searchCriteriaConverter) {
+        super(investorService, investorConverter, bidService, bidConverter, securityContextService, searchCriteriaConverter);
     }
 }

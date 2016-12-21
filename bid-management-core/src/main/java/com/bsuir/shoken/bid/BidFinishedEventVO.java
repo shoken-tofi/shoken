@@ -6,7 +6,7 @@ import lombok.*;
 @Getter
 @EqualsAndHashCode
 @ToString
-class FinishedBidVO {
+class BidFinishedEventVO {
 
     private final Bid bid;
 

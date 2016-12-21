@@ -32,18 +32,50 @@ public class BidService {
 
     private final BidRepository bidRepository;
 
-    private final BetRepository betRepository;
-
     private final TaskScheduler taskScheduler;
+
+    private final BetRepository betRepository;
 
     private final SecurityContextService securityContextService;
 
     private final SellerRepository sellerRepository;
 
+    private final InvestorRepository investorRepository;
+
     private final ApplicationEventPublisher publisher;
 
     @Transactional(readOnly = true)
     Page<Bid> findAll(final SearchCriteria criteria, final Pageable pageable) {
+
+        final BooleanBuilder builder = buildPredicate(criteria);
+
+        return bidRepository.findAll(builder.getValue(), pageable);
+    }
+
+    @Transactional(readOnly = true)
+    Page<Bid> findAllForSeller(final Long sellerId, final SearchCriteria criteria, final Pageable pageable) {
+
+        final BooleanBuilder builder = buildPredicate(criteria);
+
+        builder.and(bid.sellerId.eq(sellerId));
+
+        return bidRepository.findAll(builder.getValue(), pageable);
+    }
+
+    @Transactional(readOnly = true)
+    Page<Bid> findAllForInvestor(final Long investorId, final SearchCriteria criteria, final Pageable pageable) {
+
+        final BooleanBuilder builder = buildPredicate(criteria);
+
+        builder.and(bid.bets.any().investorId.eq(investorId));
+        if (Bid.Status.ACTIVE != criteria.getStatus()) {
+            builder.and(bid.bets.any().value.eq(bid.bets.any().value.max()));
+        }
+
+        return bidRepository.findAll(builder.getValue(), pageable);
+    }
+
+    private BooleanBuilder buildPredicate(final SearchCriteria criteria) {
 
         final BooleanBuilder builder = new BooleanBuilder();
 
@@ -84,34 +116,54 @@ public class BidService {
             builder.and(bid.expirationDate.loe(maxExpirationDate));
         }
 
-        builder.and(bid.status.eq(Bid.Status.ACTIVE));
+        builder.and(bid.status.eq(criteria.getStatus()));
 
-        return bidRepository.findAll(builder.getValue(), pageable);
+        return builder;
     }
 
     @Transactional(readOnly = true)
-    Bid findOne(final Long id) throws NoSuchEntityException, ValidationException {
+    BidVO findOne(final Long id) throws NoSuchEntityException, ValidationException {
 
-        final Bid result = bidRepository.findOneById(id).orElseThrow(() ->
+        final Bid bid = bidRepository.findOneById(id).orElseThrow(() ->
                 new NoSuchEntityException("Bid with such id = " + id + " doesn't exists."));
 
-        if (Bid.Status.ACTIVE == result.getStatus()) {
-            return result;
-        }
-
         if (!securityContextService.isAuthenticated()) {
-            throw new ValidationException("Access to bid with such id = " + id + " denied.");
+            if (Bid.Status.ACTIVE != bid.getStatus()) {
+                throw new ValidationException("Access to bid with such id = " + id + " denied.");
+            }
+
+            return new BidVO(bid, false, false);
         }
 
-        final String username = securityContextService.getAuthentication();
+        if (securityContextService.isAdmin()) {
+            if (Bid.Status.ACTIVE != bid.getStatus()) {
+                return new BidVO(bid, false, false);
+            }
 
-        switch (result.getStatus()) {
+            return new BidVO(bid, true, false);
+        }
+
+        final String username = securityContextService.getUsername();
+
+        final Seller seller = sellerRepository.findOneByName(username)
+                .orElseThrow(() -> new NoSuchEntityException("Seller with such name = " + username + " doesn't exists."));
+
+        boolean canDelete = false;
+        boolean canBet = false;
+
+        switch (bid.getStatus()) {
+            case ACTIVE:
+
+                if (!bid.getSellerId().equals(seller.getId())) {
+                    canBet = true;
+                } else {
+                    canDelete = true;
+                }
+
+                break;
             case DELETED:
 
-                final Seller seller = sellerRepository.findOneByName(username)
-                        .orElseThrow(() ->
-                                new NoSuchEntityException("Seller with such name = " + username + " doesn't exists."));
-                if (!result.getSellerId().equals(seller.getId())) {
+                if (!bid.getSellerId().equals(seller.getId())) {
                     throw new ValidationException("Access to bid with such id = " + id + " denied.");
                 }
 
@@ -119,10 +171,22 @@ public class BidService {
             case CANCELED:
             case IN_PAYMENT:
             case FINISHED:
+
+                if (!bid.getSellerId().equals(seller.getId())) {
+                    final Investor investor = investorRepository.findOneByName(username)
+                            .orElseThrow(() ->
+                                    new NoSuchEntityException("Investor with such name = " + username + " doesn't exists."));
+                    final Bet maxBet = betRepository.findFirstByBidIdOrderByValueDesc(id).orElseGet(Bet::new);
+
+                    if (!investor.getId().equals(maxBet.getInvestorId())) {
+                        throw new ValidationException("Access to bid with such id = " + id + " denied.");
+                    }
+                }
+
                 break;
         }
 
-        return result;
+        return new BidVO(bid, canDelete, canBet);
     }
 
     public Bid create(final Bid bid) {
@@ -146,7 +210,7 @@ public class BidService {
         } else {
             status = Bid.Status.IN_PAYMENT;
 
-            publisher.publishEvent(new FinishedBidVO(bid, maxBet.get()));
+            publisher.publishEvent(new BidFinishedEventVO(bid, maxBet.get()));
         }
 
         bid.setStatus(status);
@@ -157,10 +221,23 @@ public class BidService {
 
         final Bid bid = bidRepository.findOneById(id)
                 .orElseThrow(() -> new NoSuchEntityException("Bid with such id = " + id + " doesn't exists."));
+        final Bid.Status status = bid.getStatus();
 
         final Bid.Status deleted = Bid.Status.DELETED;
-        if (bid.getStatus() == deleted) {
-            throw new ValidationException("Bid with id = " + id + " already deleted.");
+
+        if (status != Bid.Status.ACTIVE) {
+            if (status == deleted) {
+                throw new ValidationException("Bid with id = " + id + " already deleted.");
+            }
+
+            throw new ValidationException("Bid with id = " + id + " can't be deleted.");
+        }
+
+        if (!securityContextService.isAdmin()) {
+            Optional<Bet> maxBet = betRepository.findFirstByBidIdOrderByValueDesc(id);
+            if (maxBet.isPresent()) {
+                throw new ValidationException("Bid with id = " + id + " contains active bets.");
+            }
         }
 
         bid.setStatus(deleted);

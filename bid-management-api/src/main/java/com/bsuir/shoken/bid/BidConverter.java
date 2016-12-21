@@ -37,8 +37,13 @@ public class BidConverter {
 
     private final ShokenConfigurationProperties configurationProperties;
 
-    BidFindOneDto toFindOneDto(final Bid bid) {
+    BidFindOneDto toFindOneDto(final BidVO vo) {
 
+        if (vo == null) {
+            return null;
+        }
+
+        final Bid bid = vo.getBid();
         if (bid == null) {
             return null;
         }
@@ -56,6 +61,8 @@ public class BidConverter {
         dto.setSeller(toSellerFindAllDto(bid.getSellerId()));
         dto.setComment(bid.getComment());
         dto.setBets(toBetFindAllDTOs(bid.getId()));
+        dto.setCanDelete(vo.isCanDelete());
+        dto.setCanBet(vo.isCanBet());
 
         return dto;
     }

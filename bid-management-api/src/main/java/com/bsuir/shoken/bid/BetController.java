@@ -31,7 +31,7 @@ abstract class BetController {
     @PostMapping
     public BetFindAllDto create(@RequestBody BetCreateDto dto) throws ValidationException, NoSuchEntityException {
 
-        final String username = securityContextService.getAuthentication();
+        final String username = securityContextService.getUsername();
 
         final Seller seller = sellerService.findByName(username);
         if (seller != null) {

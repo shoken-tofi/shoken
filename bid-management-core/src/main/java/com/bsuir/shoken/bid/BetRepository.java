@@ -12,7 +12,5 @@ interface BetRepository extends PagingAndSortingRepository<Bet, Long> {
 
     Page<Bet> findByBidId(final Long bidId, final Pageable pageable);
 
-    Optional<Bet> findFirstByBidIdAndInvestorIdOrderByValueDesc(final Long bidId, final Long investorId);
-
     Optional<Bet> findFirstByBidIdOrderByValueDesc(final Long bidId);
 }

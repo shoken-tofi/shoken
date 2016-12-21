@@ -14,7 +14,7 @@ public class BidFinishedEvent extends ApplicationEvent {
 
     private BigDecimal totalPrice;
 
-    public BidFinishedEvent(FinishedBidVO source) {
+    public BidFinishedEvent(BidFinishedEventVO source) {
         super(source);
 
         final Bid bid = source.getBid();

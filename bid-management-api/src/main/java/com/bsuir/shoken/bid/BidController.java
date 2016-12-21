@@ -19,8 +19,8 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 @RequestMapping("/bids")
 abstract class BidController {
 
-    private final static String PAGE = "1";
-    private final static String SIZE = "10";
+    final static String PAGE = "1";
+    final static String SIZE = "10";
 
     private final BidService bidService;
     private final BidConverter bidConverter;
@@ -49,7 +49,7 @@ abstract class BidController {
     @GetMapping(value = "/{id}")
     public BidFindOneDto get(@PathVariable Long id) throws Exception {
 
-        final Bid bid = bidService.findOne(id);
+        final BidVO bid = bidService.findOne(id);
 
         return bidConverter.toFindOneDto(bid);
     }
@@ -59,7 +59,7 @@ abstract class BidController {
     public BidFindAllDto create(@RequestBody BidCreateDto dto)
             throws ValidationException, NoSuchEntityException {
 
-        final String username = securityContextService.getAuthentication();
+        final String username = securityContextService.getUsername();
         final Seller seller = sellerService.findByName(username);
         dto.setSellerId(seller.getId());
 
