@@ -4,6 +4,7 @@ import com.bsuir.shoken.NoSuchEntityException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,8 @@ class DealService {
     private final BillRepository billRepository;
 
     private final TaskScheduler taskScheduler;
+
+    private final ApplicationEventPublisher publisher;
 
     Bill createRandomBill() {
         return new Bill(BigInteger.probablePrime(20, new SecureRandom()),
@@ -133,6 +136,8 @@ class DealService {
             companyBill.setAmount(newCompanyBill);
             billRepository.save(companyBill);
         }
+
+        publisher.publishEvent(deal);
 
         deal.setStatus(Deal.Status.CANCELED);
         dealRepository.save(deal);

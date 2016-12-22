@@ -176,6 +176,10 @@
                 <constraints nullable="false"/>
             </column>
             <column name="comment" type="VARCHAR(1000)"/>
+            <column name="winner_id" type="BIGINT">
+                <constraints foreignKeyName="fk_bets_investors_winner_id"
+                             referencedColumnNames="id" referencedTableName="investors"/>
+            </column>
         </createTable>
 
         <createTable tableName="bets">

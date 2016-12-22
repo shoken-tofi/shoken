@@ -38,6 +38,12 @@
 
         <dependency>
             <groupId>com.bsuir.tofi</groupId>
+            <artifactId>payment-management-event</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bsuir.tofi</groupId>
             <artifactId>shoken-management-exception</artifactId>
             <version>${project.version}</version>
         </dependency>

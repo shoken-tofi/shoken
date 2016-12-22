@@ -65,7 +65,7 @@ public class Bid extends BaseEntity {
     @JoinColumn(name = "bid_id", nullable = false, insertable = false, updatable = false)
     List<Bet> bets;
 
-    @Column(name = "winner_id", nullable = false)
+    @Column(name = "winner_id")
     private Long winnerId;
 
     enum Status {

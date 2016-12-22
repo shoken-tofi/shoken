@@ -237,6 +237,7 @@ public class BidService {
             status = Bid.Status.IN_PAYMENT;
 
             final Bet bet = maxBet.get();
+            bid.setWinnerId(bet.getInvestorId());
 
             publisher.publishEvent(new BidFinishedEventVO(bid, bet,
                     sellerRepository.findOne(bid.getSellerId()).getName(),
